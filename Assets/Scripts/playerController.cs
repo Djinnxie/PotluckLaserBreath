@@ -5,18 +5,18 @@ using UnityEngine;
 public class playerController : MonoBehaviour
 {
     // define this in unity engine
-    public float movementForwardSpeed;
-    public float movementBackwardSpeed;
-    public float strafeSpeed;
-    public float rotationSpeed;
+    public float movementForwardSpeed = 5f;
+    public float movementBackwardSpeed = 2f;
+    public float strafeSpeed = 4f;
+    public float rotationSpeed = 2f;
 
-    public Transform cameraTransform;
-    public float cameraSpeed;
+    public Transform cameraTransform ;
+    public float cameraSpeed = 1f;
 
-    public float lookUpMax;
-    public float lookDownMax;
+    public float lookUpMax = 90f;
+    public float lookDownMax = 90f;
 
-    public float crouchDistance;
+    public float crouchDistance = 1.2f;
     private bool crouching = false;
 
     // Start is called before the first frame update
