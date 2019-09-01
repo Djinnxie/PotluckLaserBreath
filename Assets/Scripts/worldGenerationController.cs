@@ -8,7 +8,9 @@ public class worldGenerationController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Instantiate(wallPiece);
+        Instantiate(wallPiece, new Vector3(0,0,0), Quaternion.identity);
+        Instantiate(wallPiece, new Vector3(0, 0, 8), Quaternion.identity);
+        //wallPiece.transform.position = new Vector3(0, 0, 0);
     }
 
     // Update is called once per frame
