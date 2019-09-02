@@ -10,6 +10,12 @@ public class playerController : MonoBehaviour
     public float strafeSpeed = 4f;
     public float rotationSpeed = 2f;
 
+    public GameObject laserObject;
+    public GameObject laserObject2;
+
+    public Transform laserTransform;
+    public Transform laserTransform2;
+
     public Transform cameraTransform ;
     public float cameraSpeed = 1f;
 
@@ -22,8 +28,9 @@ public class playerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        Cursor.visible = false;
     }
+
 
     // Update is called once per frame
     void Update()
@@ -33,6 +40,19 @@ public class playerController : MonoBehaviour
 
     void PlayerInput()
     {
+
+        if (Input.GetKeyDown(KeyCode.Space)||Input.GetMouseButtonDown(0))
+        {
+            laserObject.GetComponent<ParticleSystem>().Play();
+            laserObject2.GetComponent<ParticleSystem>().Play();
+        }
+
+
+        if (Input.GetKeyUp(KeyCode.Space)||Input.GetMouseButtonUp(0))
+        {
+            laserObject.GetComponent<ParticleSystem>().Stop();
+            laserObject2.GetComponent<ParticleSystem>().Stop();
+        }
 
         if (Input.GetKey("w") && Input.GetKey("s"))
         {
@@ -79,6 +99,8 @@ public class playerController : MonoBehaviour
             transform.localRotation *= Quaternion.Euler(0f, yRot, 0f);
 
             // rotates the camera up and down
+            laserTransform.localRotation *= Quaternion.Euler(-xRot, 0f, 0f);
+            laserTransform2.localRotation *= Quaternion.Euler(-xRot, 0f, 0f);
             cameraTransform.localRotation *= Quaternion.Euler(-xRot, 0f, 0f);
 
             // clamps the max up and down view
