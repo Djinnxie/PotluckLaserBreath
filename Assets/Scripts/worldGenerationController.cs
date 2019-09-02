@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-class RoomPiece
+public class RoomPiece : MonoBehaviour
 {
     public GameObject roomType;
     public Vector3 position;
