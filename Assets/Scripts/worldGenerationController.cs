@@ -6,11 +6,12 @@ public class worldGenerationController : MonoBehaviour
 {
     public GameObject corridor;
     public GameObject tJunction;
+    public GameObject corner;
     private int roomSize = 14;
 
 
     // the grid map class
-    private GridMap grid;
+    public GridMap grid;
 
     //grid width and height
     public int gridWidth;
@@ -19,8 +20,7 @@ public class worldGenerationController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        grid = new GridMap(gridWidth, gridHeight, corridor);
-        grid.Start();
+
     }
 
     // Update is called once per frame

@@ -243,6 +243,10 @@ MonoBehaviour:
     type: 3}
   tJunction: {fileID: 4785367781808309408, guid: 615b326079cccf24ca9507e12446a36b,
     type: 3}
+  corner: {fileID: 830879091819574651, guid: 028cb335e0169974cae62a32cdb6dfb5, type: 3}
+  grid: {fileID: 0}
+  gridWidth: 4
+  gridHeight: 4
 --- !u!4 &671508479
 Transform:
   m_ObjectHideFlags: 0

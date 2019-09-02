@@ -2,15 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GridSection : MonoBehaviour
+public class GridSection
 {
-
     public GameObject gridSectionType;
     public  Vector3 position;
     public Quaternion rotation;
     public int[] coords { get; set; }
     public int rot;
     public int roomSize = 7 * 2;
+
+    public bool willDraw { get; set; }
     public GridSection()
     {
         coords = new int[3] { -1, -1, -1 };
@@ -22,8 +23,8 @@ public class GridSection : MonoBehaviour
 
         switch (rot)
         {
+            
             //forward
-            default:
             case 0:
                 rotation = Quaternion.Euler(-90f, 0f, 0f);
                 break;
@@ -38,6 +39,8 @@ public class GridSection : MonoBehaviour
             //right
             case 3:
                 rotation = Quaternion.Euler(-90f, -90f, 0f);
+                break;
+            default:
                 break;
         }
     }
@@ -57,11 +60,15 @@ public class GridSection : MonoBehaviour
 
 public class CorridorSection : GridSection
 {
-    public CorridorSection(GameObject type, int x, int y, int z, int rot) 
+    
+
+    public CorridorSection(GameObject type, int x, int y, int z, int rot, bool draw) 
         : base(x, y, z, rot)
     {
         gridSectionType = type;
+        willDraw = draw;
     }
+    
 }
 
 public class RoomSection : GridSection

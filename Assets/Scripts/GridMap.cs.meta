@@ -3,7 +3,13 @@ guid: dc255a3a29d543447a3a7c1086700990
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - corridorObject: {fileID: 8708218643865102106, guid: 01b88b35d47608344a3399e016bd5fdf,
+      type: 3}
+  - tJunctionObject: {fileID: 4785367781808309408, guid: 615b326079cccf24ca9507e12446a36b,
+      type: 3}
+  - cornerObject: {fileID: 830879091819574651, guid: 028cb335e0169974cae62a32cdb6dfb5,
+      type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
