@@ -34,7 +34,7 @@ public class GridSection
                 break;
             //backwards
             case 2:
-                rotation = Quaternion.Euler(-90f, 180f, 0f);
+                rotation = Quaternion.Euler(-90f, -180f, 0f);
                 break;
             //left
             case 3:

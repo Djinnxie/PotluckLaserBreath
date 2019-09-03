@@ -386,9 +386,9 @@ MonoBehaviour:
   cornerObject: {fileID: 830879091819574651, guid: 028cb335e0169974cae62a32cdb6dfb5,
     type: 3}
   roomSize: 0
-  gridSizeX: 5
-  gridSizeY: 5
-  hallwaySegments: 10
+  gridSizeX: 6
+  gridSizeY: 6
+  hallwaySegments: 2
 --- !u!1 &691045469
 GameObject:
   m_ObjectHideFlags: 0
@@ -1096,7 +1096,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1593909646}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.00022, y: -0, z: 0.00175}
+  m_LocalPosition: {x: -0.00046, y: 0, z: 0.00143}
   m_LocalScale: {x: 0.02, y: 0.02, z: 0.02}
   m_Children: []
   m_Father: {fileID: 513242062}
@@ -1120,7 +1120,7 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: e318ad97ee77381489986b1bd92dfa63, type: 2}
+  - {fileID: 2100000, guid: f91621cdb73af664abab8c46762fb4b9, type: 2}
   - {fileID: 2100000, guid: 62e4e4b84ea559242aa8e0649c2ddf7e, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
@@ -1248,7 +1248,7 @@ ParticleSystem:
     startLifetime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 5
+      scalar: 3.92
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -1739,7 +1739,7 @@ ParticleSystem:
     gravityModifier:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0
+      scalar: -0.01
       minScalar: 0
       maxCurve:
         serializedVersion: 2
@@ -1792,8 +1792,8 @@ ParticleSystem:
   ShapeModule:
     serializedVersion: 6
     enabled: 1
-    type: 0
-    angle: 28.27
+    type: 4
+    angle: 86.52
     length: 5
     boxThickness: {x: 0, y: 0, z: 0}
     radiusThickness: 1
@@ -2104,29 +2104,29 @@ ParticleSystem:
     m_BurstCount: 0
     m_Bursts: []
   SizeModule:
-    enabled: 0
+    enabled: 1
     curve:
       serializedVersion: 2
       minMaxState: 1
-      scalar: 1
+      scalar: 3
       minScalar: 1
       maxCurve:
         serializedVersion: 2
         m_Curve:
         - serializedVersion: 3
           time: 0
-          value: 0
+          value: 1
           inSlope: 0
-          outSlope: 1
+          outSlope: 0
           tangentMode: 0
           weightedMode: 0
           inWeight: 0.33333334
           outWeight: 0.33333334
         - serializedVersion: 3
           time: 1
-          value: 1
+          value: 0.3108139
           inSlope: 1
-          outSlope: 0
+          outSlope: 1
           tangentMode: 0
           weightedMode: 0
           inWeight: 0.33333334
@@ -2617,7 +2617,7 @@ ParticleSystem:
     flipU: 0
     flipV: 0
   VelocityModule:
-    enabled: 0
+    enabled: 1
     x:
       serializedVersion: 2
       minMaxState: 0
@@ -5010,7 +5010,7 @@ ParticleSystem:
         m_RotationOrder: 4
     maxLights: 20
   TrailModule:
-    enabled: 1
+    enabled: 0
     mode: 0
     ratio: 1
     lifetime:

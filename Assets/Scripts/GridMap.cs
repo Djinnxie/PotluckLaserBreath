@@ -90,6 +90,9 @@ public class GridMap : MonoBehaviour
 
     private int lastPositionX = 0;
     private int lastPositionY = -1;
+    private bool initRooms = false;
+    private int[] currentRoom;
+    private int[] previousRoom;
 
 
     public GridMap(int w, int l, GameObject corridor, GameObject tJunction, GameObject corner)
@@ -113,7 +116,7 @@ public class GridMap : MonoBehaviour
             }
         }
         //gridMap[0, 1] = new GridSection();
-       // print (gridMap[0,1].coords[0]);
+        // print (gridMap[0,1].coords[0]);
         /*
         wallLocations = new List<wallLoc>();
 
@@ -321,7 +324,8 @@ public class GridMap : MonoBehaviour
             }
         }
         */
-        createRoom(0, 0, 0, 2);
+        previousRoom = new int[3] { -1, 0, 0 };
+        createRoom(0, 0, 0, 0);
 
         //int rot = 0;
         //wallLocations = new List<wallLoc>();
@@ -356,10 +360,11 @@ public class GridMap : MonoBehaviour
 
     public void createRoom(int x, int y, int count, int prev)
     {
+
         GameObject pieceType = corridorObject;
         int[] nextRoom = chooseNextRoom(x, y, 0);
         int tileRotation = 0;
-        int rotationForNextTime = 0;
+        //int rotationForNextTime = 0;
 
         if (nextRoom[2] == -1)
         {
@@ -367,12 +372,12 @@ public class GridMap : MonoBehaviour
             return;
         }
         //rotation code
-        if (Mathf.Abs(nextRoom[2] - prev) == 1|| Mathf.Abs(nextRoom[2] - prev) == 3)
+        if (Mathf.Abs(nextRoom[2] - previousRoom[2]) == 1|| Mathf.Abs(nextRoom[2] - previousRoom[2]) == 3)
         {
             // corner
             pieceType = cornerObject;
             tileRotation = nextRoom[2];
-            switch (prev)
+            switch (previousRoom[2])
             {
                     // from below
                 case 0:
@@ -380,11 +385,12 @@ public class GridMap : MonoBehaviour
                     {
                         // to the right
                         case 1:
-                            tileRotation = 0;
+                            tileRotation = 1;
+                            //print("zero one");
                             break;
                         // to the left
                         case 3:
-                            tileRotation = 1;
+                            tileRotation = 0;
                             break;
                     }
                     break;
@@ -394,11 +400,11 @@ public class GridMap : MonoBehaviour
                     {
                         // to above
                         case 0:
-                            tileRotation = 2;
+                            tileRotation = 3;
                             break;
                         // to below
                         case 2:
-                            tileRotation = 1;
+                            tileRotation = 0;
                             break;
                     }
                     break;
@@ -408,11 +414,11 @@ public class GridMap : MonoBehaviour
                     {
                         // to the right
                         case 1:
-                            tileRotation = 3;
+                            tileRotation = 2;
                             break;
                         // to the left
                         case 3:
-                            tileRotation = 2;
+                            tileRotation = 3;
                             break;
                     }
                     break;
@@ -422,11 +428,11 @@ public class GridMap : MonoBehaviour
                     {
                         // to above
                         case 0:
-                            tileRotation = 3;
+                            tileRotation = 2;
                             break;
                         // to below
                         case 2:
-                            tileRotation = 0;
+                            tileRotation = 1;
                             break;
                     }
                     break;
@@ -441,10 +447,15 @@ public class GridMap : MonoBehaviour
 
         }
 
+        print(tileRotation);
         gridMap[x, y] = new CorridorSection(pieceType, x, y, 0, tileRotation);
-        print(gridMap[x, y]);
+        print("previous "+previousRoom[2]+". next "+ nextRoom[2]);
         Instantiate(gridMap[x, y].gridSectionType, gridMap[x, y].position, gridMap[x, y].rotation);
-        if (count < hallwaySegments)
+
+        previousRoom = nextRoom;
+        currentRoom = nextRoom;
+
+        if (count < hallwaySegments-1)
         {
             createRoom(nextRoom[0], nextRoom[1], count++, nextRoom[2]);
         }
