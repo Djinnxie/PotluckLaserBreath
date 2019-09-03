@@ -11,7 +11,7 @@ public class GridSection
     public int rot;
     public int roomSize = 7 * 2;
 
-    public bool willDraw { get; set; }
+    //public bool willDraw { get; set; }
     public GridSection()
     {
         coords = new int[3] { -1, -1, -1 };
@@ -30,15 +30,15 @@ public class GridSection
                 break;
             //right
             case 1:
-                rotation = Quaternion.Euler(-90f, 90f, 0f);
+                rotation = Quaternion.Euler(-90f, -90f, 0f);
                 break;
             //backwards
             case 2:
                 rotation = Quaternion.Euler(-90f, 180f, 0f);
                 break;
-            //right
+            //left
             case 3:
-                rotation = Quaternion.Euler(-90f, -90f, 0f);
+                rotation = Quaternion.Euler(-90f, 90f, 0f);
                 break;
             default:
                 break;
@@ -62,11 +62,11 @@ public class CorridorSection : GridSection
 {
     
 
-    public CorridorSection(GameObject type, int x, int y, int z, int rot, bool draw) 
+    public CorridorSection(GameObject type, int x, int y, int z, int rot)//, bool draw) 
         : base(x, y, z, rot)
     {
         gridSectionType = type;
-        willDraw = draw;
+        //willDraw = draw;
     }
     
 }
