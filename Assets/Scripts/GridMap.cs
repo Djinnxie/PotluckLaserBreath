@@ -84,6 +84,17 @@ public class GridMap : MonoBehaviour
     private List<wallLoc> wallLocations;
     private PathLogic corridorPath;
 
+    public int gridSizeX = 5;
+    public int gridSizeY = 5;
+    public int hallwaySegments = 10;
+
+    private int lastPositionX = 0;
+    private int lastPositionY = -1;
+    private bool initRooms = false;
+    private int[] currentRoom;
+    private int[] previousRoom;
+
+
     public GridMap(int w, int l, GameObject corridor, GameObject tJunction, GameObject corner)
     {
         gridWidth = w;
@@ -96,6 +107,16 @@ public class GridMap : MonoBehaviour
     // Start is called before the first frame update
     public void Start()
     {
+        gridMap = new GridSection[gridSizeX, gridSizeY];
+        for (int x = 0; x < gridSizeX; x++)
+        {
+            for (int y = 0; y < gridSizeY; y++)
+            {
+                gridMap[x, y] = new GridSection();
+            }
+        }
+        //gridMap[0, 1] = new GridSection();
+        // print (gridMap[0,1].coords[0]);
         /*
         wallLocations = new List<wallLoc>();
 
@@ -303,183 +324,344 @@ public class GridMap : MonoBehaviour
             }
         }
         */
+        previousRoom = new int[3] { -1, 0, 0 };
+        createRoom(0, 0, 0, 0);
 
-        int rot = 0;
-        wallLocations = new List<wallLoc>();
+        //int rot = 0;
+        //wallLocations = new List<wallLoc>();
 
-        corridorPath = new PathLogic();
+        //corridorPath = new PathLogic();
 
-        gridMap = new GridSection[gridWidth, gridLength];
+        //gridMap = new GridSection[gridWidth, gridLength];
 
-        for (int l = 0; l < gridLength; l++)
-        {
-            for (int w = 0; w < gridWidth; w++)
-            {
+        //for (int l = 0; l < gridLength; l++)
+        //{
+        //    for (int w = 0; w < gridWidth; w++)
+        //    {
 
-                gridMap[w, l] = generateCorridor(w, l, 0);
-                //gridMap[w, l] = new CorridorSection(cornerObject, w, l, 0, rot);
-                if (gridMap[w,l].willDraw == true)
-                {
-                    print("draw");
-                    Instantiate(gridMap[w, l].gridSectionType, gridMap[w, l].position, gridMap[w, l].rotation);
-                }
-                
+        //        gridMap[w, l] = generateCorridor(w, l, 0);
+        //        //gridMap[w, l] = new CorridorSection(cornerObject, w, l, 0, rot);
+        //        if (gridMap[w,l].willDraw == true)
+        //        {
+        //            print("draw");
+        //            Instantiate(gridMap[w, l].gridSectionType, gridMap[w, l].position, gridMap[w, l].rotation);
+        //        }
 
-            }
-        }
+
+        //    }
+        //}
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
-    CorridorSection generateCorridor(int w, int l, int count)
+    public void createRoom(int x, int y, int count, int prev)
     {
-        print("generation count: " + count);
-        int randDirection; //= Random.Range(0, 4);
 
-        int rot = 0;
+        GameObject pieceType = corridorObject;
+        int[] nextRoom = chooseNextRoom(x, y, 0);
+        int tileRotation = 0;
+        //int rotationForNextTime = 0;
 
-        wallLoc forwardCornerWallLoc = new wallLoc();
-        wallLoc rightCornerWallLoc = new wallLoc();
-
-        if (corridorPath.pathCount < 1)
+        if (nextRoom[2] == -1)
         {
-            randDirection = 3;
+            print("ERROR");
+            return;
+        }
+        //rotation code
+        if (Mathf.Abs(nextRoom[2] - previousRoom[2]) == 1|| Mathf.Abs(nextRoom[2] - previousRoom[2]) == 3)
+        {
+            // corner
+            pieceType = cornerObject;
+            tileRotation = nextRoom[2];
+            switch (previousRoom[2])
+            {
+                    // from below
+                case 0:
+                    switch (nextRoom[2])
+                    {
+                        // to the right
+                        case 1:
+                            tileRotation = 1;
+                            //print("zero one");
+                            break;
+                        // to the left
+                        case 3:
+                            tileRotation = 0;
+                            break;
+                    }
+                    break;
+                    // from the left
+                case 1:
+                    switch (nextRoom[2])
+                    {
+                        // to above
+                        case 0:
+                            tileRotation = 3;
+                            break;
+                        // to below
+                        case 2:
+                            tileRotation = 0;
+                            break;
+                    }
+                    break;
+                    // from the top
+                case 2:
+                    switch (nextRoom[2])
+                    {
+                        // to the right
+                        case 1:
+                            tileRotation = 2;
+                            break;
+                        // to the left
+                        case 3:
+                            tileRotation = 3;
+                            break;
+                    }
+                    break;
+                    // from the right
+                case 3:
+                    switch (nextRoom[2])
+                    {
+                        // to above
+                        case 0:
+                            tileRotation = 2;
+                            break;
+                        // to below
+                        case 2:
+                            tileRotation = 1;
+                            break;
+                    }
+                    break;
+            }
+
         }
         else
         {
-            randDirection = count;
+            tileRotation = nextRoom[2];
+            // straight
+            pieceType = corridorObject;
+
         }
 
-        switch (randDirection)
+        print(tileRotation);
+        gridMap[x, y] = new CorridorSection(pieceType, x, y, 0, tileRotation);
+        print("previous "+previousRoom[2]+". next "+ nextRoom[2]);
+        Instantiate(gridMap[x, y].gridSectionType, gridMap[x, y].position, gridMap[x, y].rotation);
+
+        previousRoom = nextRoom;
+        currentRoom = nextRoom;
+
+        if (count < hallwaySegments-1)
         {
-            case 0:
-                rot = 0;
-                //corners have a forward and right wall no matter how the rotation
-
-                //forward wall
-
-                forwardCornerWallLoc.wallFacePos = new int[2] { w, l };
-                forwardCornerWallLoc.wallBackPos = new int[2] { w, l - 1 };
-                
-
-                //right wall
-                rightCornerWallLoc.wallFacePos = new int[2] { w, l };
-                rightCornerWallLoc.wallBackPos = new int[2] { w - 1, l };
-                
-
-                if ((forwardCornerWallLoc.wallBackPos[0] == corridorPath.getPathPoint(corridorPath.pathCount-1)[0] &&
-                    forwardCornerWallLoc.wallBackPos[1] == corridorPath.getPathPoint(corridorPath.pathCount - 1)[1])
-                    ||
-                    (rightCornerWallLoc.wallBackPos[0] == corridorPath.getPathPoint(corridorPath.pathCount - 1)[0] &&
-                    rightCornerWallLoc.wallBackPos[1] == corridorPath.getPathPoint(corridorPath.pathCount - 1)[1]))
-                {
-                    return generateCorridor(w, l, count+1);
-                }
-                else
-                {
-                    wallLocations.Add(forwardCornerWallLoc);
-                    wallLocations.Add(rightCornerWallLoc);
-                }
-                break;
-            case 1:
-                rot = 1;
-                //corners have a forward and right wall no matter how the rotation
-
-                //forward wall
-                forwardCornerWallLoc.wallFacePos = new int[2] { w, l };
-                forwardCornerWallLoc.wallBackPos = new int[2] { w + 1, l };
-
-                //right wall
-                rightCornerWallLoc.wallFacePos = new int[2] { w, l };
-                rightCornerWallLoc.wallBackPos = new int[2] { w, l - 1 };
-
-
-                if ((forwardCornerWallLoc.wallBackPos[0] == corridorPath.getPathPoint(corridorPath.pathCount - 1)[0] &&
-                    forwardCornerWallLoc.wallBackPos[1] == corridorPath.getPathPoint(corridorPath.pathCount - 1)[1])
-                    ||
-                    (rightCornerWallLoc.wallBackPos[0] == corridorPath.getPathPoint(corridorPath.pathCount - 1)[0] &&
-                    rightCornerWallLoc.wallBackPos[1] == corridorPath.getPathPoint(corridorPath.pathCount - 1)[1]))
-                {
-                    return generateCorridor(w, l, count+1);
-                }
-                else
-                {
-                    wallLocations.Add(forwardCornerWallLoc);
-                    wallLocations.Add(rightCornerWallLoc);
-                }
-                break;
-            case 2:
-                rot = 2;
-
-                //corners have a forward and right wall no matter how the rotation
-
-                //forward wall
-                forwardCornerWallLoc.wallFacePos = new int[2] { w, l };
-                forwardCornerWallLoc.wallBackPos = new int[2] { w, l + 1 };
-
-                //right wall
-
-                rightCornerWallLoc.wallFacePos = new int[2] { w, l };
-                rightCornerWallLoc.wallBackPos = new int[2] { w + 1, l };
-
-
-                if ((forwardCornerWallLoc.wallBackPos[0] == corridorPath.getPathPoint(corridorPath.pathCount - 1)[0] &&
-                    forwardCornerWallLoc.wallBackPos[1] == corridorPath.getPathPoint(corridorPath.pathCount - 1)[1])
-                    ||
-                    (rightCornerWallLoc.wallBackPos[0] == corridorPath.getPathPoint(corridorPath.pathCount-1)[0] &&
-                    rightCornerWallLoc.wallBackPos[1] == corridorPath.getPathPoint(corridorPath.pathCount-1)[1]))
-                {
-                    return generateCorridor(w, l, count+1);
-                }
-                else
-                {
-                    wallLocations.Add(forwardCornerWallLoc);
-                    wallLocations.Add(rightCornerWallLoc);
-                }
-                break;
-            case 3:
-                rot = 3;
-
-                //corners have a forward and right wall no matter how the rotation
-
-                //forward wall
-                forwardCornerWallLoc.wallFacePos = new int[2] { w, l };
-                forwardCornerWallLoc.wallBackPos = new int[2] { w - 1, l };
-
-                //right wall
-                rightCornerWallLoc.wallFacePos = new int[2] { w, l };
-                rightCornerWallLoc.wallBackPos = new int[2] { w, l + 1 };
-
-                if (corridorPath.pathCount < 1)
-                {
-                    wallLocations.Add(forwardCornerWallLoc);
-                    wallLocations.Add(rightCornerWallLoc);
-                }
-                else if ((forwardCornerWallLoc.wallBackPos[0] == corridorPath.getPathPoint(corridorPath.pathCount-1)[0] &&
-                    forwardCornerWallLoc.wallBackPos[1] == corridorPath.getPathPoint(corridorPath.pathCount-1)[1])
-                    ||
-                    (rightCornerWallLoc.wallBackPos[0] == corridorPath.getPathPoint(corridorPath.pathCount-1)[0] &&
-                    rightCornerWallLoc.wallBackPos[1] == corridorPath.getPathPoint(corridorPath.pathCount-1)[1]))
-                {
-                    return generateCorridor(w, l, count+1);
-                }
-                else
-                {
-                    wallLocations.Add(forwardCornerWallLoc);
-                    wallLocations.Add(rightCornerWallLoc);
-                }
-
-                break;
-            case 5:
-                return new CorridorSection(cornerObject, w, l, 0, rot, false);
+            createRoom(nextRoom[0], nextRoom[1], count++, nextRoom[2]);
         }
-        corridorPath.addPathPoint(w, l);
-        print(corridorPath.pathCount);
-        print("Path X " + corridorPath.getPathPoint(corridorPath.pathCount - 1)[0] + " Path Y " + corridorPath.getPathPoint(corridorPath.pathCount - 1)[1]);
-        return new CorridorSection(cornerObject, w,l,0,rot, true);
     }
+
+    public int[] chooseNextRoom(int x, int y, int count)
+    {
+        if (count > 8)
+        {
+            return new int[3] { -1, -1, -1 };
+        }
+        int newX = x;
+        int newY = y;
+        int direction = -1;
+
+        switch (Random.Range(0, 4))
+        {
+            // up
+            case (0):
+                newY++;
+                direction = 0;
+                break;
+            // Right
+            case (1):
+                newX++;
+                direction = 1;
+                break;
+            // Down
+            case (2):
+                newY--;
+                direction = 2;
+                break;
+            // Left
+            case (3):
+                newX--;
+                direction = 3;
+                break;
+        }
+
+        // out of bounds sanity check
+        if (newX < 0 || newY < 0 || newX>=gridSizeX || newY>=gridSizeY)
+        {
+            return chooseNextRoom(x, y, count++);
+        }
+
+        // if position is vacant
+        if (gridMap[newX, newY].coords[0] == -1)
+        {
+            return new int[3] { newX, newY, direction };
+        }
+        // else, try again
+        else
+        {
+            return chooseNextRoom(x, y, count++);
+        }
+
+
+    }
+
+    /*  CorridorSection generateCorridor(int w, int l, int count)
+      {
+          print("generation count: " + count);
+          int randDirection; //= Random.Range(0, 4);
+
+          int rot = 0;
+
+          wallLoc forwardCornerWallLoc = new wallLoc();
+          wallLoc rightCornerWallLoc = new wallLoc();
+
+          if (corridorPath.pathCount < 1)
+          {
+              randDirection = 3;
+          }
+          else
+          {
+              randDirection = count;
+          }
+
+          switch (randDirection)
+          {
+              case 0:
+                  rot = 0;
+                  //corners have a forward and right wall no matter how the rotation
+
+                  //forward wall
+
+                  forwardCornerWallLoc.wallFacePos = new int[2] { w, l };
+                  forwardCornerWallLoc.wallBackPos = new int[2] { w, l - 1 };
+
+
+                  //right wall
+                  rightCornerWallLoc.wallFacePos = new int[2] { w, l };
+                  rightCornerWallLoc.wallBackPos = new int[2] { w - 1, l };
+
+
+                  if ((forwardCornerWallLoc.wallBackPos[0] == corridorPath.getPathPoint(corridorPath.pathCount-1)[0] &&
+                      forwardCornerWallLoc.wallBackPos[1] == corridorPath.getPathPoint(corridorPath.pathCount - 1)[1])
+                      ||
+                      (rightCornerWallLoc.wallBackPos[0] == corridorPath.getPathPoint(corridorPath.pathCount - 1)[0] &&
+                      rightCornerWallLoc.wallBackPos[1] == corridorPath.getPathPoint(corridorPath.pathCount - 1)[1]))
+                  {
+                      return generateCorridor(w, l, count+1);
+                  }
+                  else
+                  {
+                      wallLocations.Add(forwardCornerWallLoc);
+                      wallLocations.Add(rightCornerWallLoc);
+                  }
+                  break;
+              case 1:
+                  rot = 1;
+                  //corners have a forward and right wall no matter how the rotation
+
+                  //forward wall
+                  forwardCornerWallLoc.wallFacePos = new int[2] { w, l };
+                  forwardCornerWallLoc.wallBackPos = new int[2] { w + 1, l };
+
+                  //right wall
+                  rightCornerWallLoc.wallFacePos = new int[2] { w, l };
+                  rightCornerWallLoc.wallBackPos = new int[2] { w, l - 1 };
+
+
+                  if ((forwardCornerWallLoc.wallBackPos[0] == corridorPath.getPathPoint(corridorPath.pathCount - 1)[0] &&
+                      forwardCornerWallLoc.wallBackPos[1] == corridorPath.getPathPoint(corridorPath.pathCount - 1)[1])
+                      ||
+                      (rightCornerWallLoc.wallBackPos[0] == corridorPath.getPathPoint(corridorPath.pathCount - 1)[0] &&
+                      rightCornerWallLoc.wallBackPos[1] == corridorPath.getPathPoint(corridorPath.pathCount - 1)[1]))
+                  {
+                      return generateCorridor(w, l, count+1);
+                  }
+                  else
+                  {
+                      wallLocations.Add(forwardCornerWallLoc);
+                      wallLocations.Add(rightCornerWallLoc);
+                  }
+                  break;
+              case 2:
+                  rot = 2;
+
+                  //corners have a forward and right wall no matter how the rotation
+
+                  //forward wall
+                  forwardCornerWallLoc.wallFacePos = new int[2] { w, l };
+                  forwardCornerWallLoc.wallBackPos = new int[2] { w, l + 1 };
+
+                  //right wall
+
+                  rightCornerWallLoc.wallFacePos = new int[2] { w, l };
+                  rightCornerWallLoc.wallBackPos = new int[2] { w + 1, l };
+
+
+                  if ((forwardCornerWallLoc.wallBackPos[0] == corridorPath.getPathPoint(corridorPath.pathCount - 1)[0] &&
+                      forwardCornerWallLoc.wallBackPos[1] == corridorPath.getPathPoint(corridorPath.pathCount - 1)[1])
+                      ||
+                      (rightCornerWallLoc.wallBackPos[0] == corridorPath.getPathPoint(corridorPath.pathCount-1)[0] &&
+                      rightCornerWallLoc.wallBackPos[1] == corridorPath.getPathPoint(corridorPath.pathCount-1)[1]))
+                  {
+                      return generateCorridor(w, l, count+1);
+                  }
+                  else
+                  {
+                      wallLocations.Add(forwardCornerWallLoc);
+                      wallLocations.Add(rightCornerWallLoc);
+                  }
+                  break;
+              case 3:
+                  rot = 3;
+
+                  //corners have a forward and right wall no matter how the rotation
+
+                  //forward wall
+                  forwardCornerWallLoc.wallFacePos = new int[2] { w, l };
+                  forwardCornerWallLoc.wallBackPos = new int[2] { w - 1, l };
+
+                  //right wall
+                  rightCornerWallLoc.wallFacePos = new int[2] { w, l };
+                  rightCornerWallLoc.wallBackPos = new int[2] { w, l + 1 };
+
+                  if (corridorPath.pathCount < 1)
+                  {
+                      wallLocations.Add(forwardCornerWallLoc);
+                      wallLocations.Add(rightCornerWallLoc);
+                  }
+                  else if ((forwardCornerWallLoc.wallBackPos[0] == corridorPath.getPathPoint(corridorPath.pathCount-1)[0] &&
+                      forwardCornerWallLoc.wallBackPos[1] == corridorPath.getPathPoint(corridorPath.pathCount-1)[1])
+                      ||
+                      (rightCornerWallLoc.wallBackPos[0] == corridorPath.getPathPoint(corridorPath.pathCount-1)[0] &&
+                      rightCornerWallLoc.wallBackPos[1] == corridorPath.getPathPoint(corridorPath.pathCount-1)[1]))
+                  {
+                      return generateCorridor(w, l, count+1);
+                  }
+                  else
+                  {
+                      wallLocations.Add(forwardCornerWallLoc);
+                      wallLocations.Add(rightCornerWallLoc);
+                  }
+
+                  break;
+              case 5:
+                  return new CorridorSection(cornerObject, w, l, 0, rot, false);
+          }
+          corridorPath.addPathPoint(w, l);
+          print(corridorPath.pathCount);
+          print("Path X " + corridorPath.getPathPoint(corridorPath.pathCount - 1)[0] + " Path Y " + corridorPath.getPathPoint(corridorPath.pathCount - 1)[1]);
+          return new CorridorSection(cornerObject, w,l,0,rot, true);
+      }
+  
+  */
 }
