@@ -241,7 +241,7 @@ public class playerController : MonoBehaviour
         laserCharge -= laserDrain * Time.deltaTime;
         if (laserCharge > 1)
         {
-            uiScript.ChangeText("LaserText", laserCharge.ToString());
+            SetLaserChargeText();
             return true;
         }
         return false;
@@ -249,6 +249,11 @@ public class playerController : MonoBehaviour
     private void SetLaserCharge(float charge)
     {
         laserCharge = charge;
-        uiScript.ChangeText("LaserText", laserCharge.ToString());
+        SetLaserChargeText();
+    }
+    private void SetLaserChargeText()
+    {
+        int laserChargeInt = Mathf.RoundToInt(laserCharge);
+        uiScript.ChangeText("LaserText", laserChargeInt.ToString());
     }
 }
