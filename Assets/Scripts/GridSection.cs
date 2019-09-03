@@ -71,23 +71,3 @@ public class CorridorSection : GridSection
     
 }
 
-public class RoomSection : GridSection
-{
-
-    public RoomObject[] parentRoom;
-
-    public int roomPos { get; set; }
-    public RoomSection() : base()
-    {
-
-    }
-    public RoomSection(ref RoomObject type, int x, int y, int z, int rot, int pos)
-        : base(x, y, z, rot)
-    {
-        roomPos = pos;
-        parentRoom = new RoomObject[1] { type };
-        parentRoom[0].AddRoomSection(this);
-    }
-
-}
-
