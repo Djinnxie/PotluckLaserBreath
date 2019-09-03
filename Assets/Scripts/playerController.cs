@@ -14,6 +14,9 @@ public class playerController : MonoBehaviour
     public GameObject laserObject;
     public GameObject laserObject2;
 
+    public GameObject character;
+    public Animator charController;
+
     public Transform laserTransform;
     public Transform laserTransform2;
 
@@ -41,6 +44,8 @@ public class playerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        
+
         uiScript = uiObject.GetComponent<UIController>();
         ChangePotionCount(startingPotionCount);
         SetLaserCharge(laserChargeMax);
@@ -60,6 +65,8 @@ public class playerController : MonoBehaviour
 
     void PlayerInput()
     {
+        bool isMovingx = false;
+        bool isMovingy = false;
 
         if ((Input.GetKey(KeyCode.Space) || Input.GetMouseButton(0)) && RemainingLaserCharge())
         {
@@ -103,35 +110,56 @@ public class playerController : MonoBehaviour
 
         if (Input.GetKey("w") && Input.GetKey("s"))
         {
-
+            isMovingx = false;
         }
         else if (Input.GetKey(KeyCode.LeftShift) && Input.GetKey("w"))
         {
             transform.position += transform.TransformDirection(Vector3.forward) * Time.deltaTime * movementForwardSpeed * 2.5f;
+            isMovingx = true;
         }
         else if (Input.GetKey("w"))
         {
             transform.position += transform.TransformDirection(Vector3.forward) * Time.deltaTime * movementForwardSpeed;
+            isMovingx = true;
         }
         else if (Input.GetKey("s"))
         {
             transform.position += transform.TransformDirection(-Vector3.forward) * Time.deltaTime * movementBackwardSpeed;
+            isMovingx = true;
+        }
+        else
+        {
+            
+            isMovingx = false;
         }
 
 
 
         if (Input.GetKey("a") && Input.GetKey("d"))
         {
-
+            isMovingy = false;
         }
         else if (Input.GetKey("a"))
         {
             transform.position += transform.TransformDirection(Vector3.left) * Time.deltaTime * strafeSpeed;
+            isMovingy = true;
         }
         else if (Input.GetKey("d"))
         {
             transform.position += transform.TransformDirection(Vector3.right) * Time.deltaTime * strafeSpeed;
+            isMovingy = true;
         }
+
+        if (isMovingx || isMovingy)
+        {
+            charController.SetInteger("walk", 1);
+        }
+        else
+        {
+            charController.SetInteger("walk", 0);
+        }
+
+
 
         if (Input.GetAxis("Mouse X") != 0 || Input.GetAxis("Mouse Y") != 0)
         {
