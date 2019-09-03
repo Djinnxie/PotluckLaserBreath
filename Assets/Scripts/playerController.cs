@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class playerController : MonoBehaviour
 {
@@ -16,6 +17,10 @@ public class playerController : MonoBehaviour
     public Transform laserTransform;
     public Transform laserTransform2;
 
+    private float laserCharge;
+    public float laserChargeMax;
+    public float laserDrain;
+
     public Transform cameraTransform ;
     public float cameraSpeed = 1f;
 
@@ -25,9 +30,24 @@ public class playerController : MonoBehaviour
     public float crouchDistance = 1.2f;
     private bool crouching = false;
 
+    public float potionGrabDistance;
+    public int startingPotionCount;
+    public GameObject uiObject;
+    private UIController uiScript;
+    private int potionCount = 0;
+    private bool reloading;
+    private bool laserParticleStart = true;
+
     // Start is called before the first frame update
     void Start()
     {
+        uiScript = uiObject.GetComponent<UIController>();
+        ChangePotionCount(startingPotionCount);
+        SetLaserCharge(laserChargeMax);
+        if (uiScript == null)
+        {
+            print("failed to load script");
+        }
         Cursor.visible = false;
     }
 
@@ -41,10 +61,37 @@ public class playerController : MonoBehaviour
     void PlayerInput()
     {
 
-        if (Input.GetKeyDown(KeyCode.Space)||Input.GetMouseButtonDown(0))
+        if ((Input.GetKey(KeyCode.Space) || Input.GetMouseButton(0)) && RemainingLaserCharge())
         {
-            laserObject.GetComponent<ParticleSystem>().Play();
-            laserObject2.GetComponent<ParticleSystem>().Play();
+            if (laserParticleStart)
+            {
+                laserObject.GetComponent<ParticleSystem>().Play();
+                laserObject2.GetComponent<ParticleSystem>().Play();
+                laserParticleStart = false;
+            }
+        }
+        else if (Input.GetKeyUp(KeyCode.Space) || Input.GetMouseButtonUp(0))
+        {
+            laserParticleStart = true;
+        }
+        else if (laserCharge < 1)
+        {
+            laserObject.GetComponent<ParticleSystem>().Stop();
+            laserObject2.GetComponent<ParticleSystem>().Stop();
+        }
+
+        if (Input.GetKeyDown("r") && !reloading)
+        {
+            if (potionCount > 0)
+            {
+                ChangePotionCount(-1);
+                SetLaserCharge(laserChargeMax);
+                reloading = true;
+            }
+        }
+        else
+        {
+            reloading = false;
         }
 
 
@@ -132,5 +179,48 @@ public class playerController : MonoBehaviour
         angleX = Mathf.Clamp(angleX, lookDownMax * -1, lookUpMax);
         q.x = Mathf.Tan(0.5f * Mathf.Deg2Rad * angleX);
         return q;
+    }
+
+    public bool GrabPotion(float x, float y, float z)
+    {
+        if (Input.GetKey("e"))
+        {
+            float distanceFromPotion;
+
+            distanceFromPotion = Mathf.Abs(x - transform.position.x) 
+                                + Mathf.Abs(y - transform.position.y) 
+                                + Mathf.Abs(z - transform.position.z);
+
+            if (distanceFromPotion < potionGrabDistance)
+            {
+                ChangePotionCount(1);
+                return true;
+            }
+
+        }
+        return false;
+    }
+
+    private void ChangePotionCount(int countModifier)
+    {
+        potionCount += countModifier;
+        uiScript.ChangeText("PotionText", potionCount.ToString());
+        //uiObject.GetComponentInChildren<Text>().text = potionCount.ToString();
+    }
+
+    private bool RemainingLaserCharge()
+    {
+        laserCharge -= laserDrain * Time.deltaTime;
+        if (laserCharge > 1)
+        {
+            uiScript.ChangeText("LaserText", laserCharge.ToString());
+            return true;
+        }
+        return false;
+    }
+    private void SetLaserCharge(float charge)
+    {
+        laserCharge = charge;
+        uiScript.ChangeText("LaserText", laserCharge.ToString());
     }
 }
