@@ -113,10 +113,15 @@ public class BaseRoom
 
     public virtual void SetPosition(int x, int y, int z)
     {
+        int newWidth = 0;
+        int newLength = 0; //height
         coords = new int[3] { x, y, z };
+        
         if (width % 2 == 0)
         {
             bottomLeft[0] = x - (width / 2);
+            newWidth = (width/2)*(roomSize/ 2);
+
         }
         else
         {
@@ -126,12 +131,13 @@ public class BaseRoom
         if (length % 2 == 0)
         {
             bottomLeft[1] = y - (length / 2);
+            newLength = length * (roomSize / 2);
         }
         else
         {
             bottomLeft[1] = y - ((length - 1) / 2);
         }
-        position = new Vector3(x * roomSize * width, z * roomSize, y * roomSize * length);
+        position = new Vector3(x * roomSize * width+newWidth, z * roomSize, y * roomSize * length+newLength);// +length/2);
 
     }
 }

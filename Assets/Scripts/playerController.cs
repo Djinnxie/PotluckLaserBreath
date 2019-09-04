@@ -91,6 +91,7 @@ public class playerController : MonoBehaviour
         {
             if (potionCount > 0)
             {
+                charController.SetBool("drink", true);
                 ChangePotionCount(-1);
                 SetLaserCharge(laserChargeMax);
                 reloading = true;
@@ -99,6 +100,7 @@ public class playerController : MonoBehaviour
         else
         {
             reloading = false;
+            //charController.SetBool("drink", false);
         }
 
 
