@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class PathLogic
 {
     List<int[]> path = new List<int[]>();
