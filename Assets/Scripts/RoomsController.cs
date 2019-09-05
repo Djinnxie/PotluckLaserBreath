@@ -123,6 +123,11 @@ public class BaseRoom
             newWidth = (width/2)*(roomSize/ 2);
 
         }
+        else if (width % 2 == 1 && width > 2)
+        {
+            bottomLeft[0] = y - ((width-1) / 2);
+            newWidth = ((width + 1) / 2) * (roomSize / 2);
+        }
         else
         {
             bottomLeft[0] = x - ((width - 1) / 2);
@@ -131,13 +136,21 @@ public class BaseRoom
         if (length % 2 == 0)
         {
             bottomLeft[1] = y - (length / 2);
-            newLength = length * (roomSize / 2);
+            newLength = (length / 2) * (roomSize / 2);
+        }
+        else if (length % 2 == 1 && length > 2)
+        {
+            bottomLeft[1] = y - ((length-1) / 2);
+            newLength = ((length+1) / 2) * (roomSize / 2);
         }
         else
         {
             bottomLeft[1] = y - ((length - 1) / 2);
         }
-        position = new Vector3(x * roomSize * width+newWidth, z * roomSize, y * roomSize * length+newLength);// +length/2);
+
+        newWidth = (x >= 0 ? newWidth * -1 : newWidth);
+        newLength = (y >= 0 ? newLength * -1 : newLength);
+        position = new Vector3(x * roomSize * width+newWidth, z * roomSize, y * roomSize * length+newLength);
 
     }
 }
@@ -154,16 +167,25 @@ public class RoomsController : MonoBehaviour
     {
         int x;
         int y = -1;
+        int randomRoomType = 1;
 
+        BaseRoom newRoom;
         //looping through bellow grid
-        for (x = 0; x < gridMapScript.gridSizeX; x++)
+        for (x = 1; x < gridMapScript.gridSizeX; x++)
         {
             if (roomCount < maxRooms)
             {
-                if (CanRoomFit(x, y, roomsTypes[0]))
+                //randomRoomType = Random.Range(0, 5);
+
+                randomRoomType = (randomRoomType == 4 ? 0 : 4);
+                randomRoomType = 0;
+
+                newRoom = new BaseRoom( roomsTypes[randomRoomType]);
+                newRoom.SetPosition(x, y, 0);
+                if (CanRoomFit(x, y, newRoom))
                 {
-                    roomsInPlay.Add(new BaseRoom(roomsTypes[0]));
-                    roomsInPlay[roomCount].SetPosition(x, y, 0);
+                    Debug.Log("x = " + x + " y = " + y);
+                    roomsInPlay.Add(newRoom);
                     roomsInPlay[roomCount].Rotate(0);
                     Instantiate(roomsInPlay[roomCount].roomObject, roomsInPlay[roomCount].position,
                         roomsInPlay[roomCount].rotation);
@@ -178,6 +200,8 @@ public class RoomsController : MonoBehaviour
         {
             if (roomCount < maxRooms)
             {
+                
+
                 if (CanRoomFit(x, y, roomsTypes[0]))
                 {
                     roomsInPlay.Add(new BaseRoom(roomsTypes[0]));

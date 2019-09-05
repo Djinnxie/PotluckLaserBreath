@@ -318,7 +318,7 @@ public class GridMap : MonoBehaviour
 
     public void createRoom(int x, int y, int count, int prev)
     {
-        Debug.Log("creating room " + count);
+        //Debug.Log("creating room " + count);
 
         GameObject pieceType = corridorObject;
         int[] nextRoom = chooseNextRoom(x, y, 0);
@@ -404,7 +404,7 @@ public class GridMap : MonoBehaviour
 
         if (nextRoom[2] == -1)
         {
-            Debug.Log("giving up on creating room " + count);
+            //Debug.Log("giving up on creating room " + count);
             return;
         }
 
@@ -432,13 +432,13 @@ public class GridMap : MonoBehaviour
         }
         else
         {
-            Debug.Log("finished creating " + count + " rooms");
+            //Debug.Log("finished creating " + count + " rooms");
         }
     }
 
     public int[] chooseNextRoom(int x, int y, int count)
     {
-        Debug.Log("try " + count);
+        //Debug.Log("try " + count);
         if (count > 8)
         {
             return new int[3] { -1, -1, -1 };
