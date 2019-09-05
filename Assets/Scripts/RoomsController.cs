@@ -14,6 +14,7 @@ public class BaseRoom
     public int[] coords { get; set; }
     public int rot;
     public int roomSize = 7 * 2;
+    public RoomSection[,] roomPieces;
 
     public int[] bottomLeft = new int[2];
     public int[] topRight = new int[2];
@@ -24,6 +25,8 @@ public class BaseRoom
         width = w;
         length = l;
         coords = new int[3] { x, y, z };
+        roomPieces = new RoomSection[w, l];
+        // move the rooms to sit on the grid
         if (width%2 == 0)
         {
             bottomLeft[0] = x - (width / 2);
@@ -73,6 +76,7 @@ public class BaseRoom
         length = br.length;
         roomObject = br.roomObject;
         roomSize = br.roomSize;
+        roomPieces = new RoomSection[width, length];
     }
 
     protected virtual void Start()
@@ -116,7 +120,8 @@ public class BaseRoom
         int newWidth = 0;
         int newLength = 0; //height
         coords = new int[3] { x, y, z };
-        
+
+        // move the rooms to sit on the grid
         if (width % 2 == 0)
         {
             bottomLeft[0] = x - (width / 2);
@@ -152,29 +157,54 @@ public class RoomsController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        int x;
-        int y = -1;
-
+        BaseRoom newRoom;
         //looping through bellow grid
-        for (x = 0; x < gridMapScript.gridSizeX; x++)
+        Debug.Log(gridMapScript.outerGridSizeX / 2);
+        for (int x = gridMapScript.outerGridSizeX/2; x > gridMapScript.outerGridSizeX; x++)
         {
-            if (roomCount < maxRooms)
+
+            for (int y = gridMapScript.outerGridSizeY/2; y > 0; y--)
             {
-                if (CanRoomFit(x, y, roomsTypes[0]))
+                if(gridMapScript.GetGridSection(x,y).coords[0] == -1)
                 {
-                    roomsInPlay.Add(new BaseRoom(roomsTypes[0]));
-                    roomsInPlay[roomCount].SetPosition(x, y, 0);
-                    roomsInPlay[roomCount].Rotate(0);
-                    Instantiate(roomsInPlay[roomCount].roomObject, roomsInPlay[roomCount].position,
-                        roomsInPlay[roomCount].rotation);
-                    roomCount++;
+                    Debug.Log("found an edge");
+                    newRoom =  new BaseRoom( roomsTypes[0]);
+                    newRoom.SetPosition(x, y, 0);
+                    newRoom.Rotate(0);
+                   
+                    if(CanRoomFit(x,y, roomsTypes[0]))
+                    {
+                        AddRoomToList(newRoom,x,y,0);
+                        roomCount++;
+                        break;
+                    }
                 }
             }
         }
 
-        x = -1;
+/*        for (int y = gridMapScript.innerGridDistance; y < gridMapScript.outerGridSizeY; y++)
+        {
+            for (int x = gridMapScript.innerGridDistance; x < gridMapScript.outerGridSizeX; x++)
+            {
+                if (gridMapScript.GetGridSection(x, y).coords[0] != -1)
+                {
+                    newRoom = new BaseRoom(roomsTypes[0]);
+                    newRoom.SetPosition(x-1, y, 0);
+                    newRoom.Rotate(0);
+
+                    if (CanRoomFit(x-1, y, roomsTypes[0]))
+                    {
+                        AddRoomToList(newRoom, x-1, y, 0);
+                        roomCount++;
+                        break;
+                    }
+                }
+            }
+        }*/
+
+        /*x = -1;
         //looping through left of grid
-        for (y = 0; y < gridMapScript.gridSizeY; y++)
+        for (y = 0; y < gridMapScript.innerGridSizeY; y++)
         {
             if (roomCount < maxRooms)
             {
@@ -191,8 +221,8 @@ public class RoomsController : MonoBehaviour
         }
 
         //looping through above grid
-        y = gridMapScript.gridSizeY + 1;
-        for (x = 0; x < gridMapScript.gridSizeX; x++)
+        y = gridMapScript.innerGridSizeY + 1;
+        for (x = 0; x < gridMapScript.innerGridSizeX; x++)
         {
             if (roomCount < maxRooms)
             {
@@ -209,8 +239,8 @@ public class RoomsController : MonoBehaviour
         }
 
         //looping through right of grid
-        x = gridMapScript.gridSizeX + 1;
-        for (y = 0; y < gridMapScript.gridSizeY; y++)
+        x = gridMapScript.innerGridSizeX + 1;
+        for (y = 0; y < gridMapScript.innerGridSizeY; y++)
         {
             if (roomCount < maxRooms)
             {
@@ -224,7 +254,26 @@ public class RoomsController : MonoBehaviour
                     roomCount++;
                 }
             }
-        }
+        }*/
+
+        /*        for(int x = 0; x < gridMapScript.outerGridSizeX; x++)
+                {
+                    string lineToPrint = "";
+                    for (int y = 0; y < gridMapScript.outerGridSizeY; y++)
+                    {
+                        if (gridMapScript.GetGridSection(x, y).coords[0] == -1)
+                        {
+                            lineToPrint += "-";
+                        }
+                        else
+                        {
+                            lineToPrint += "X";
+                        }
+                    }
+                    Debug.Log(x+"   "+lineToPrint);
+                }
+                //  =(
+                 */
     }
 
     // Update is called once per frame
@@ -240,14 +289,14 @@ public class RoomsController : MonoBehaviour
         //changing where the bounds of bottom left and top right are
 
         // if X is to the right of the grid middle
-        if (targetX > (gridMapScript.gridSizeX/2))
+        if (targetX > (gridMapScript.innerGridSizeX/2))
         {
             roomBottomLeftX = targetX;
             roomTopRightX = targetX + targetRoom.width;
         }
 
         // if X is to the left of the grid middle
-        else if (targetX < (gridMapScript.gridSizeX / 2))
+        else if (targetX < (gridMapScript.innerGridSizeX / 2))
         {
             roomTopRightX = targetX;
             roomBottomLeftX = targetX - targetRoom.width;
@@ -259,14 +308,14 @@ public class RoomsController : MonoBehaviour
         }
 
         // Y is above the grid middle
-        if (targetY > (gridMapScript.gridSizeY/2))
+        if (targetY > (gridMapScript.innerGridSizeY/2))
         {
             roomBottomLeftY = targetY;
             roomTopRightY = targetY + targetRoom.length;
         }
 
         // if Y is bellow the grid middle
-        else if (targetY < (gridMapScript.gridSizeY / 2))
+        else if (targetY < (gridMapScript.innerGridSizeY / 2))
         {
             roomTopRightY = targetY;
             roomBottomLeftY = targetY - targetRoom.length;
@@ -278,12 +327,12 @@ public class RoomsController : MonoBehaviour
         }
 
         // checks which side left or right of the middle of the grid the room is
-        if (roomBottomLeftX > (gridMapScript.gridSizeX / 2))
+        if (roomBottomLeftX > (gridMapScript.innerGridSizeX / 2))
         {
             for (int x = roomBottomLeftX; x < roomTopRightX; x++)
             {
                 //checks which side above or bellow the grid middle
-                if (roomBottomLeftY > (gridMapScript.gridSizeY / 2))
+                if (roomBottomLeftY > (gridMapScript.innerGridSizeY / 2))
                 {
                     for (int y = roomBottomLeftY; y < roomTopRightY; y++)
                     {
@@ -310,7 +359,7 @@ public class RoomsController : MonoBehaviour
             for (int x = roomTopRightX; x < roomBottomLeftX; x++)
             {
                 //checks which side above or bellow the grid middle
-                if (roomBottomLeftY > (gridMapScript.gridSizeY / 2))
+                if (roomBottomLeftY > (gridMapScript.innerGridSizeY / 2))
                 {
                     for (int y = roomBottomLeftY; y < roomTopRightY; y++)
                     {
@@ -337,11 +386,11 @@ public class RoomsController : MonoBehaviour
         foreach (BaseRoom br in roomsInPlay)
         {
             print(roomCount);
-            if (roomBottomLeftX > (gridMapScript.gridSizeX / 2))
+            if (roomBottomLeftX > (gridMapScript.innerGridSizeX / 2))
             {
                 for (int x = roomBottomLeftX; x < roomTopRightX; x++)
                 {
-                    if (roomBottomLeftY > (gridMapScript.gridSizeY / 2))
+                    if (roomBottomLeftY > (gridMapScript.innerGridSizeY / 2))
                     {
                         for (int y = roomBottomLeftY; y < roomTopRightY; y++)
                         {
@@ -369,7 +418,7 @@ public class RoomsController : MonoBehaviour
             {
                 for (int x = roomTopRightX; x < roomBottomLeftX; x++)
                 {
-                    if (roomBottomLeftY > (gridMapScript.gridSizeY / 2))
+                    if (roomBottomLeftY > (gridMapScript.innerGridSizeY / 2))
                     {
                         for (int y = roomBottomLeftY; y < roomTopRightY; y++)
                         {
@@ -397,4 +446,23 @@ public class RoomsController : MonoBehaviour
 
         return true;
     }
+
+    private void AddRoomToList(BaseRoom newRoom, int gridPositionX, int gridPositionY, int rotation)
+    {
+
+        for (int x = 0; x < newRoom.width; x++)
+        {
+            for (int y = 0; y < newRoom.length; y++)
+            {
+                newRoom.roomPieces[x, y] = new RoomSection(newRoom, newRoom.bottomLeft[0]+x, newRoom.bottomLeft[1]+y, 0, newRoom.rot);
+                gridMapScript.GetGridMap()[x + gridPositionX, y + gridPositionY] = newRoom.roomPieces[x, y];
+            }
+        }
+
+
+
+        Instantiate(newRoom.roomObject, newRoom.position,
+                            newRoom.rotation);
+    }
+
 }

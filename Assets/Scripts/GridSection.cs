@@ -68,6 +68,17 @@ public class CorridorSection : GridSection
         gridSectionType = type;
         //willDraw = draw;
     }
-    
+   
+}
+
+public class RoomSection : GridSection
+{
+    public BaseRoom parentRoom;
+
+    public RoomSection(BaseRoom room, int x, int y, int z, int rot)
+        : base(x, y, z, rot)
+    {
+        parentRoom = room;
+    }
 }
 

@@ -78,236 +78,35 @@ public class GridMap : MonoBehaviour
     private GridSection[,] gridMap;
     private PathLogic corridorPath;
 
-    public int gridSizeX { get; set; } = 5;
-    public int gridSizeY { get; set; } = 5;
+    public int innerGridSizeX { get; set; } = 5;
+    public int innerGridSizeY { get; set; } = 5;
+    public int innerGridDistance = 3;
+    public int outerGridSizeX { get; set; } = 11;
+    public int outerGridSizeY { get; set; } = 11;
     public int hallwaySegments = 10;
 
     private int lastPositionX = 0;
     private int lastPositionY = -1;
     private bool initRooms = false;
-    private int[] currentRoom;
-    private int[] previousRoom;
+    private int[] currentHall;
+    private int[] previousHall;
 
     // Start is called before the first frame update
     public void Start()
     {
-        gridMap = new GridSection[gridSizeX, gridSizeY];
-        for (int x = 0; x < gridSizeX; x++)
+        outerGridSizeX = innerGridSizeX + (innerGridDistance * 2);
+        outerGridSizeY = innerGridSizeY + (innerGridDistance * 2);
+        gridMap = new GridSection[outerGridSizeX, outerGridSizeY];
+        for (int x = 0; x < outerGridSizeX; x++)
         {
-            for (int y = 0; y < gridSizeY; y++)
+            for (int y = 0; y < outerGridSizeY; y++)
             {
                 gridMap[x, y] = new GridSection();
             }
         }
-        /*
-        wallLocations = new List<wallLoc>();
-
-        gridMap = new GridSection[gridWidth,gridLength];
-
-        GameObject previousCorridorSection;
-        GameObject newCorridorSection;
-        int rot;
-        bool firstPlacement = false;
-        // generates a starting room tile
-        int randCorridor = Random.Range(1, 3);
-        randCorridor = 1;
-        switch (randCorridor)
-        {
-            default:
-            case 1:
-                print("working");
-                newCorridorSection = corridorObject;
-                rot = 0;
-
-                // adds to the wall locations list
-
-                //corridors are viewed as having a left and right wall, no matter the rotation
-
-                // left wall 
-                wallLoc leftCorridorWallLoc = new wallLoc();
-                leftCorridorWallLoc.wallFacePos = new int[2] { 0, 0 };
-                leftCorridorWallLoc.wallBackPos = new int[2] { -1, 0 };
-                print("case 0 left X " + leftCorridorWallLoc.wallBackPos[0] +
-                                    " case 0 left Y " + leftCorridorWallLoc.wallBackPos[1]);
-                wallLocations.Add(leftCorridorWallLoc);
-
-                //right wall
-                wallLoc rightCorridorWallLoc = new wallLoc();
-                rightCorridorWallLoc.wallFacePos = new int[2] { 0, 0 };
-                rightCorridorWallLoc.wallBackPos = new int[2] { 1, 0 };
-                print("case 0 right X " + rightCorridorWallLoc.wallBackPos[0] +
-                                   " case 0 right Y " + rightCorridorWallLoc.wallBackPos[1]);
-                wallLocations.Add(rightCorridorWallLoc);
-                break;
-            case 2:
-                newCorridorSection = tJunctionObject;
-                rot = 0;
-
-                //t Junctions are viewed as having a forward wall no matter the rotation
-                wallLoc forwardTjunctWallLoc = new wallLoc();
-                forwardTjunctWallLoc.wallFacePos = new int[2] { 0, 0 };
-                forwardTjunctWallLoc.wallBackPos = new int[2] { -1, 0 };
-                wallLocations.Add(forwardTjunctWallLoc);
-                break;
-            case 3:
-                newCorridorSection = cornerObject;
-                rot = 3;
-
-                //corners have a forward and right wall no matter how the rotation
-
-                //forward wall
-                wallLoc forwardCornerWallLoc = new wallLoc();
-                forwardCornerWallLoc.wallFacePos = new int[2] { 0, 0 };
-                forwardCornerWallLoc.wallBackPos = new int[2] { -1, 0 };
-                wallLocations.Add(forwardCornerWallLoc);
-
-                //right wall
-                wallLoc rightCornerWallLoc = new wallLoc();
-                rightCornerWallLoc.wallFacePos = new int[2] { 0, 0 };
-                rightCornerWallLoc.wallBackPos = new int[2] { 0, 1 };
-                wallLocations.Add(rightCornerWallLoc);
-                break;
-            
-                break;
-        }
-
-        int count = 0;
-
-        for (int l = 0; l < gridLength; ++l)
-        {
-            for (int w = 0; w < gridWidth; ++w)
-            {
-                count++;
-                print(count);
-
-                if (firstPlacement == false)
-                {
-                    gridMap[w, l] = new CorridorSection(newCorridorSection, w, l, 0, rot);
-                    Instantiate(gridMap[w, l].gridSectionType, gridMap[w, l].position, gridMap[w, l].rotation);
-                    previousCorridorSection = newCorridorSection;
-
-                    w++;
-                    
-                }
-                bool continueLoop = false;
-                foreach (wallLoc wl in wallLocations)
-                {
-                    if (wl.wallBackPos[0] == w &&
-                        wl.wallBackPos[1] == l)
-                    {
-                        continueLoop = true;
-                    }
-                }
-
-                if (continueLoop)
-                {
-                    continue;
-                }
-
-                randCorridor = Random.Range(1, 4);
-                randCorridor = 1;
-
-                switch (randCorridor)
-                {
-                    case 1:
-                        newCorridorSection = corridorObject;
-                        rot = Random.Range(0, 4);
-                        wallLoc leftCorridorWallLoc = new wallLoc();
-                        wallLoc rightCorridorWallLoc = new wallLoc();
-
-                        switch (rot)
-                        {
-                            
-                            case 0:
-                                // left wall 
-                                leftCorridorWallLoc.wallFacePos = new int[2] { w, l };
-                                leftCorridorWallLoc.wallBackPos = new int[2] { w - 1, l };
-                                print("case 0 left X " + leftCorridorWallLoc.wallBackPos[0] +
-                                    " case 0 left Y " + leftCorridorWallLoc.wallBackPos[1]);
-                                wallLocations.Add(leftCorridorWallLoc);
-
-                                //right wall
-                                rightCorridorWallLoc.wallFacePos = new int[2] { w, l };
-                                rightCorridorWallLoc.wallBackPos = new int[2] { w + 1, l };
-                                print("case 0 right X " + rightCorridorWallLoc.wallBackPos[0] +
-                                    " case 0 right Y " + rightCorridorWallLoc.wallBackPos[1]);
-                                wallLocations.Add(rightCorridorWallLoc);
-                                break;
-
-                            case 1:
-                                // left wall 
-                                leftCorridorWallLoc.wallFacePos = new int[2] { w, l };
-                                leftCorridorWallLoc.wallBackPos = new int[2] { w, l - 1 };
-                                print("case 1 left X " + leftCorridorWallLoc.wallBackPos[0] +
-                                    " case 1 left Y " + leftCorridorWallLoc.wallBackPos[1]);
-                                wallLocations.Add(leftCorridorWallLoc);
-
-                                //right wall
-                                rightCorridorWallLoc.wallFacePos = new int[2] { w, l };
-                                rightCorridorWallLoc.wallBackPos = new int[2] { w, l + 1 };
-                                print("case 1 right X " + rightCorridorWallLoc.wallBackPos[0] +
-                                    " case 1 right Y " + rightCorridorWallLoc.wallBackPos[1]);
-                                wallLocations.Add(rightCorridorWallLoc);
-                                break;
-
-                            case 2:
-                                // left wall 
-                                leftCorridorWallLoc.wallFacePos = new int[2] { w, l };
-                                leftCorridorWallLoc.wallBackPos = new int[2] { w + 1, l };
-                                print("case 2 left X " + leftCorridorWallLoc.wallBackPos[0] +
-                                    " case 2 left Y " + leftCorridorWallLoc.wallBackPos[1]);
-                                wallLocations.Add(leftCorridorWallLoc);
-
-                                //right wall
-                                rightCorridorWallLoc.wallFacePos = new int[2] { w, l };
-                                rightCorridorWallLoc.wallBackPos = new int[2] { w - 1, l };
-                                print("case 2 right X " + rightCorridorWallLoc.wallBackPos[0] +
-                                    " case 2 right Y " + rightCorridorWallLoc.wallBackPos[1]);
-                                wallLocations.Add(rightCorridorWallLoc);
-                                break;
-
-                            case 3:
-                                // left wall 
-                                leftCorridorWallLoc.wallFacePos = new int[2] { w, l };
-                                leftCorridorWallLoc.wallBackPos = new int[2] { w, l + 1 };
-                                print("case 3 left X " + leftCorridorWallLoc.wallBackPos[0] +
-                                    " case 3 left Y " + leftCorridorWallLoc.wallBackPos[1]);
-                                wallLocations.Add(leftCorridorWallLoc);
-
-                                //right wall
-                                rightCorridorWallLoc.wallFacePos = new int[2] { w, l };
-                                rightCorridorWallLoc.wallBackPos = new int[2] { w, l - 1 };
-                                print("case 3 right X " + rightCorridorWallLoc.wallBackPos[0] +
-                                    " case 3 right Y " + rightCorridorWallLoc.wallBackPos[1]);
-                                wallLocations.Add(rightCorridorWallLoc);
-                                break;
-                            default:
-                                break;
-                        }
-                        break;
-                    case 2:
-                        newCorridorSection = tJunctionObject;
-                        rot = Random.Range(0, 4);
-                        break;
-                    case 3:
-                        newCorridorSection = cornerObject;
-                        rot = Random.Range(0, 4);
-                        break;
-                    default:
-                        break;
-                }
-                if (firstPlacement)
-                {
-                    gridMap[w, l] = new CorridorSection(newCorridorSection, w, l, 0, rot);
-                    Instantiate(gridMap[w, l].gridSectionType, gridMap[w, l].position, gridMap[w, l].rotation);
-                    previousCorridorSection = newCorridorSection;
-                }
-                firstPlacement = true;
-            }
-        }
-        */
-        previousRoom = new int[3] { -1, 0, 0 };
-        createRoom(0, 0, 0, 0);
+       
+        previousHall = new int[3] { innerGridDistance, innerGridDistance-1, 0 };
+        createHall(innerGridDistance, innerGridDistance, 0, 0);
     }
 
     // Update is called once per frame
@@ -316,27 +115,27 @@ public class GridMap : MonoBehaviour
 
     }
 
-    public void createRoom(int x, int y, int count, int prev)
+    public void createHall(int x, int y, int count, int prev)
     {
-        Debug.Log("creating room " + count);
+        //Debug.Log("creating room " + count);
 
         GameObject pieceType = corridorObject;
-        int[] nextRoom = chooseNextRoom(x, y, 0);
+        int[] nextHall = chooseNextHall(x, y, 0);
         int tileRotation = 0;
         //int rotationForNextTime = 0;
 
 
         //rotation code
-        if (Mathf.Abs(nextRoom[2] - previousRoom[2]) == 1|| Mathf.Abs(nextRoom[2] - previousRoom[2]) == 3)
+        if (Mathf.Abs(nextHall[2] - previousHall[2]) == 1|| Mathf.Abs(nextHall[2] - previousHall[2]) == 3)
         {
             // corner
             pieceType = cornerObject;
-            tileRotation = nextRoom[2];
-            switch (previousRoom[2])
+            tileRotation = nextHall[2];
+            switch (previousHall[2])
             {
                     // from below
                 case 0:
-                    switch (nextRoom[2])
+                    switch (nextHall[2])
                     {
                         // to the right
                         case 1:
@@ -351,7 +150,7 @@ public class GridMap : MonoBehaviour
                     break;
                     // from the left
                 case 1:
-                    switch (nextRoom[2])
+                    switch (nextHall[2])
                     {
                         // to above
                         case 0:
@@ -365,7 +164,7 @@ public class GridMap : MonoBehaviour
                     break;
                     // from the top
                 case 2:
-                    switch (nextRoom[2])
+                    switch (nextHall[2])
                     {
                         // to the right
                         case 1:
@@ -379,7 +178,7 @@ public class GridMap : MonoBehaviour
                     break;
                     // from the right
                 case 3:
-                    switch (nextRoom[2])
+                    switch (nextHall[2])
                     {
                         // to above
                         case 0:
@@ -396,15 +195,15 @@ public class GridMap : MonoBehaviour
         }
         else
         {
-            tileRotation = nextRoom[2];
+            tileRotation = nextHall[2];
             // straight
             pieceType = corridorObject;
 
         }
 
-        if (nextRoom[2] == -1)
+        if (nextHall[2] == -1)
         {
-            Debug.Log("giving up on creating room " + count);
+            //Debug.Log("giving up on creating hall " + count);
             return;
         }
 
@@ -413,7 +212,7 @@ public class GridMap : MonoBehaviour
         // if its the last piece, cap it off with an endpice
         if (count == hallwaySegments - 1)
         {
-            gridMap[x, y] = new CorridorSection(pieceType, x, y, 0, previousRoom[2]);
+            gridMap[x, y] = new CorridorSection(pieceType, x, y, 0, previousHall[2]);
             Instantiate(endObject, gridMap[x, y].position, gridMap[x, y].rotation);
         }
         else
@@ -423,22 +222,22 @@ public class GridMap : MonoBehaviour
         }
 
 
-        previousRoom = nextRoom;
-        currentRoom = nextRoom;
+        previousHall = nextHall;
+        currentHall = nextHall;
 
         if (count < hallwaySegments-1)
         {
-            createRoom(nextRoom[0], nextRoom[1], count+=1, nextRoom[2]);
+            createHall(nextHall[0], nextHall[1], count+=1, nextHall[2]);
         }
         else
         {
-            Debug.Log("finished creating " + count + " rooms");
+            //Debug.Log("finished creating " + count + " halls");
         }
     }
 
-    public int[] chooseNextRoom(int x, int y, int count)
+    public int[] chooseNextHall(int x, int y, int count)
     {
-        Debug.Log("try " + count);
+        //Debug.Log("try " + count);
         if (count > 8)
         {
             return new int[3] { -1, -1, -1 };
@@ -472,9 +271,9 @@ public class GridMap : MonoBehaviour
         }
 
         // out of bounds sanity check
-        if (newX < 0 || newY < 0 || newX>=gridSizeX || newY>=gridSizeY)
+        if (newX < 0 || newY < 0 || newX>=innerGridSizeX+innerGridDistance || newY>=innerGridSizeY+innerGridDistance)
         {
-            return chooseNextRoom(x, y, count++);
+            return chooseNextHall(x, y, count++);
         }
 
         // if position is vacant
@@ -485,7 +284,7 @@ public class GridMap : MonoBehaviour
         // else, try again
         else
         {
-            return chooseNextRoom(x, y, count+=1);
+            return chooseNextHall(x, y, count+=1);
         }
 
 
@@ -498,7 +297,7 @@ public class GridMap : MonoBehaviour
 
     public GridSection GetGridSection(int x, int y)
     {
-        if (x < 0 || y < 0 || x >= gridSizeX || y >= gridSizeY)
+        if (x < 0 || y < 0 || x >= innerGridSizeX+innerGridDistance || y >= innerGridSizeY+innerGridDistance)
         {
             return new GridSection();
         }
