@@ -1,0 +1,4 @@
+low poly sword - ariskay https://sketchfab.com/3d-models/low-poly-sword-4fe2230f28e74b349fd8b79b52b38282
+armor - soidev https://www.turbosquid.com/FullPreview/Index.cfm/ID/1397198
+player model, idle animation - https://www.raywenderlich.com/6055-creating-reusable-characters-with-blender-and-unity
+misc mocap data - CMU Graphics Lab Motion Capture Database http://mocap.cs.cmu.edu

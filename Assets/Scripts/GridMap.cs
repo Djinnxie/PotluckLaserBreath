@@ -72,6 +72,7 @@ public class GridMap : MonoBehaviour
     public int gridLength;
     public GameObject corridorObject;
     public GameObject tJunctionObject;
+    public GameObject endObject;
     public GameObject cornerObject;
     public int roomSize;
     private GridSection[,] gridMap;
@@ -317,17 +318,14 @@ public class GridMap : MonoBehaviour
 
     public void createRoom(int x, int y, int count, int prev)
     {
+        Debug.Log("creating room " + count);
 
         GameObject pieceType = corridorObject;
         int[] nextRoom = chooseNextRoom(x, y, 0);
         int tileRotation = 0;
         //int rotationForNextTime = 0;
 
-        if (nextRoom[2] == -1)
-        {
-            print("ERROR");
-            return;
-        }
+
         //rotation code
         if (Mathf.Abs(nextRoom[2] - previousRoom[2]) == 1|| Mathf.Abs(nextRoom[2] - previousRoom[2]) == 3)
         {
@@ -404,20 +402,43 @@ public class GridMap : MonoBehaviour
 
         }
 
-        gridMap[x, y] = new CorridorSection(pieceType, x, y, 0, tileRotation);
-        Instantiate(gridMap[x, y].gridSectionType, gridMap[x, y].position, gridMap[x, y].rotation);
+        if (nextRoom[2] == -1)
+        {
+            Debug.Log("giving up on creating room " + count);
+            return;
+        }
+
+
+        
+        // if its the last piece, cap it off with an endpice
+        if (count == hallwaySegments - 1)
+        {
+            gridMap[x, y] = new CorridorSection(pieceType, x, y, 0, previousRoom[2]);
+            Instantiate(endObject, gridMap[x, y].position, gridMap[x, y].rotation);
+        }
+        else
+        {
+            gridMap[x, y] = new CorridorSection(pieceType, x, y, 0, tileRotation);
+            Instantiate(gridMap[x, y].gridSectionType, gridMap[x, y].position, gridMap[x, y].rotation);
+        }
+
 
         previousRoom = nextRoom;
         currentRoom = nextRoom;
 
         if (count < hallwaySegments-1)
         {
-            createRoom(nextRoom[0], nextRoom[1], count++, nextRoom[2]);
+            createRoom(nextRoom[0], nextRoom[1], count+=1, nextRoom[2]);
+        }
+        else
+        {
+            Debug.Log("finished creating " + count + " rooms");
         }
     }
 
     public int[] chooseNextRoom(int x, int y, int count)
     {
+        Debug.Log("try " + count);
         if (count > 8)
         {
             return new int[3] { -1, -1, -1 };
@@ -464,7 +485,7 @@ public class GridMap : MonoBehaviour
         // else, try again
         else
         {
-            return chooseNextRoom(x, y, count++);
+            return chooseNextRoom(x, y, count+=1);
         }
 
 
