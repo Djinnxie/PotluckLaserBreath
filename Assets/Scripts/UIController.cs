@@ -8,6 +8,9 @@ public class UIController : MonoBehaviour
 
     public GameObject playerObject;
 
+    public GameObject laserChargeBarObject;
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -20,14 +23,26 @@ public class UIController : MonoBehaviour
         
     }
 
-    public void ChangeText (string textName, string textString)
+    public void ChangeLaserCharge(float laserCharge, float chargeMax)
+    {
+        laserCharge = (laserCharge / chargeMax) * 2;
+
+        laserChargeBarObject.transform.localScale = new Vector3(laserCharge, 1, 1);
+    }
+
+    public void ChangePotionValue (int potionValue)
     {
         foreach (Text tx in this.GetComponentsInChildren<Text>())
         {
-            if (tx.name == textName)
+            if (tx.name == "PotionText")
             {
-                tx.text = textString;
+                tx.text = potionValue.ToString();
             }
         }
+    }
+
+    public void ResetUI()
+    {
+
     }
 }
