@@ -502,8 +502,8 @@ public class RoomsController : MonoBehaviour
         //if it fits
         if (roomWorks)
         {
-            Debug.Log("creating room at" + (targetX) + ", " + (targetY));
-            return count;
+           Debug.Log("creating room at" + (targetX) + ", " + (targetY));
+           return count;
         }
         //if its a square and doesnt fit or if its been rotated all the way already, dont bother rotating it.
         if (targetRoom.width == targetRoom.length||count==3)
@@ -522,12 +522,12 @@ public class RoomsController : MonoBehaviour
     {
 
         newRoom.SetPosition(gridPositionX, gridPositionY, 0);
-        Debug.Log("Room Number: " + roomCount);
+        //Debug.Log("Room Number: " + roomCount);
 
         int newX;
         int newY;
 
-        Debug.Log("room Width: " + newRoom.width + "room Length: " + newRoom.length);
+        //Debug.Log("room Width: " + newRoom.width + "room Length: " + newRoom.length);
         for (int x = 0; x < newRoom.width; x++)
         {
             for (int y = 0; y < newRoom.length; y++)

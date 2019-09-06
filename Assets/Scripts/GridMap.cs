@@ -2,70 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-
-public class PathLogic
-{
-    List<int[]> path = new List<int[]>();
-    public int pathCount { get; set; }
-
-    public PathLogic ()
-    {
-        pathCount = 0;
-    }
-
-    public int[] getPathPoint(int pos)
-    {
-        if (pos > pathCount)
-        {
-            return new int[2] { -1, -1 };
-        }
-        else
-        {
-            return path[pos];
-        }
-    }
-        
-
-    public int[] getPathPoint(int w, int l)
-    {
-        foreach (int[] wl in path)
-        {
-            if(wl[0] == w && wl[1] == l)
-            {
-                return wl;
-            }
-        }
-        return new int[2] { -1, -1 };
-    }
-
-    public void addPathPoint(int w, int l)
-    {
-        if (pathCount < 1)
-        {
-            path.Add(new int[2] { w, l });
-            pathCount++;
-        }
-        else if (checkPath(w, l))
-        {
-            path.Add(new int[2] { w, l });
-            pathCount++;
-            
-        }
-    }
-
-    public bool checkPath(int w, int l)
-    {
-        int[] previousPoint = new int[2] { path[path.Count - 1][0], path[path.Count - 1][1] };
-
-        if (previousPoint[0] == w || previousPoint[1] == l)
-        {
-            return true;
-        }
-
-        return false;
-    }
-}
-
 [System.Serializable]
 public class GridMap : MonoBehaviour
 {
@@ -78,7 +14,6 @@ public class GridMap : MonoBehaviour
     public GameObject cornerObject;
     public int roomSize;
     private GridSection[,] gridMap;
-    private PathLogic corridorPath;
 
     public int innerGridSizeX = 5;
     public int innerGridSizeY= 5;
@@ -121,7 +56,6 @@ public class GridMap : MonoBehaviour
     public void createHall(int x, int y, int count, int prev)
     {
         GameObject pieceType = corridorObject;
-        //Debug.Log("-------------");
         int[] nextHall = chooseNextHall(x, y, 0);
         int tileRotation = 0;
 
@@ -213,7 +147,6 @@ public class GridMap : MonoBehaviour
 
         if (nextHall[2] == -1)
         {
-            //Debug.Log("giving up on creating hall " + count);
             return;
         }
 
@@ -235,17 +168,16 @@ public class GridMap : MonoBehaviour
 
 
                 // try and create rooms
-                //Debug.Log(3 - previousHall[2]);
                 int[] tryRoom = getWallFace(previousHall[2], nextHall[2]);
 
                 // room code
-                //BaseRoom roomToTry = new BaseRoom(roomControllerScript.roomsTypes[Random.Range(0, 5)]);
-
-                BaseRoom roomToTry = new BaseRoom(roomControllerScript.roomsTypes[0]);
+                BaseRoom roomToTry = new BaseRoom(roomControllerScript.roomsTypes[Random.Range(0, 5)]);
+               
+                //for testing specific rooms
+                //BaseRoom roomToTry = new BaseRoom(roomControllerScript.roomsTypes[4]);
 
                 for (int v=0;v<2;v++)
                 {
-                    //Debug.Log("trying position " +  tryRoom[v]);
                     int newX = x;
                     int newY = y;
                     int wallDoorLocation = 0;
@@ -254,161 +186,70 @@ public class GridMap : MonoBehaviour
                     {
                         case 0:
                             newY += 1;
-                            if(v == 0)
-                            {
-                                wallDoorLocation = 0;
-                            }
-                            else
-                            {
 
-                                wallDoorLocation = 2;
-                            }
+                            wallDoorLocation = 0;
                             break;
                         case 1:
                             newX += 1;
-                            if (v == 0)
-                            {
-                                wallDoorLocation = 1;
-                            }
-                            else
-                            {
-                                wallDoorLocation = 3;
-                            }
-                            
+
+                            wallDoorLocation = 1;
                             break;
                         case 2:
                             newY -= roomToTry.length;
-                            if (v == 0)
-                            {
-                                wallDoorLocation = 2;
-                            }
-                            else
-                            {
-                                wallDoorLocation = 0;
-                            }
 
+                            wallDoorLocation = 2;
                             break;
                         case 3:
                             newX -= roomToTry.width;
-                            if (v == 0)
-                            {
-                                wallDoorLocation = 3;
-                            }
-                            else
-                            {
-                                wallDoorLocation = 1;
-                            }
+
+                            wallDoorLocation = 3;
                             break;
 
                     }
                     int canFit = roomControllerScript.CanRoomFit(newX, newY, roomToTry, 0);
                     if (canFit != -1)
                     {
-                        //Debug.Log("can fit at " + newX + ", " + newY);
                         newRoomObject = roomControllerScript.AddRoomToList(roomToTry, newX, newY, canFit);
-                        switch (tryRoom[v])
+                        if (pieceType.name == "corridorTypeOne")
                         {
-                            case 0:
-                                if (v == 0)
-                                {
-                                    if (pieceType.name == "corridorTypeOne")
-                                    {
-                                        secondDoorBool = true;
-                                    }
-                                    else if (pieceType.name == "Corner")
-                                    {
-                                        secondDoorBool = true;
-                                    }
-                                }
-                                else
-                                {
+                            switch (tryRoom[v])
+                            {
+                                case 0:
+                                    firstDoorBool = true;
+                                    break;
+                                case 1:
+                                    firstDoorBool = true;
+                                    break;
+                                case 2:
+                                    secondDoorBool = true;
+                                    break;
+                                case 3:
+                                    secondDoorBool = true;
+                                    break;
 
-                                    if (pieceType.name == "corridorTypeOne")
-                                    {
-                                        firstDoorBool = true;
-                                    }
-                                    else if (pieceType.name == "Corner")
-                                    {
-                                        firstDoorBool = true;
-                                    }
-                                }
-                                break;
-                            case 1:
-                                if (v == 0)
-                                {
-                                    if (pieceType.name == "corridorTypeOne")
-                                    {
-                                        secondDoorBool = true;
-                                    }
-                                    else if (pieceType.name == "Corner")
-                                    {
-                                        secondDoorBool = true;
-                                    }
-                                }
-                                else
-                                {
-                                    if (pieceType.name == "corridorTypeOne")
-                                    {
-                                        firstDoorBool = true;
-                                    }
-                                    else if (pieceType.name == "Corner")
-                                    {
-                                        firstDoorBool = true;
-                                    }
-                                }
-
-                                break;
-                            case 2:
-                                if (v == 0)
-                                {
-                                    if (pieceType.name == "corridorTypeOne")
-                                    {
-                                        secondDoorBool = true;
-                                    }
-                                    else if (pieceType.name == "Corner")
-                                    {
-                                        secondDoorBool = true;
-                                    }
-                                }
-                                else
-                                {
-                                    if (pieceType.name == "corridorTypeOne")
-                                    {
-                                        firstDoorBool = true;
-                                    }
-                                    else if (pieceType.name == "Corner")
-                                    {
-                                        firstDoorBool = true;
-                                    }
-                                }
-
-                                break;
-                            case 3:
-                                if (v == 0)
-                                {
-                                    if (pieceType.name == "corridorTypeOne")
-                                    {
-                                        secondDoorBool = true;
-                                    }
-                                    else if (pieceType.name == "Corner")
-                                    {
-                                        secondDoorBool = true;
-                                    }
-                                }
-                                else
-                                {
-                                    if (pieceType.name == "corridorTypeOne")
-                                    {
-                                        firstDoorBool = true;
-                                    }
-                                    else if (pieceType.name == "Corner")
-                                    {
-                                        firstDoorBool = true;
-                                    }
-                                }
-                                break;
-
+                            }
                         }
+                        else
+                        {
+                            Debug.Log("try "+tryRoom[v]+", rotation "+tileRotation);
+                            int doorPlacement = tryRoom[v]+tileRotation;
+                            if (doorPlacement > 3)
+                            {
+                                doorPlacement -= 4;
+                            }
+
+                            switch (doorPlacement)
+                            {
+                                case 0:
+                                    firstDoorBool = true;
+                                    break;
+                                case 1:
+                                    secondDoorBool = true;
+                                    break;
+
+                            }
+                        }
+                       
                         if (newRoomObject.GetComponent<WallPlacer>() != null)
                         {
                             newRoomObject.GetComponent<WallPlacer>().RemoveWall(wallDoorLocation);
@@ -418,10 +259,16 @@ public class GridMap : MonoBehaviour
                 }
             }
 
-            //roomControllerScript.CanRoomFit(0, 0, roomControllerScript.roomsTypes[0]);
-
             gridMap[x, y] = new CorridorSection(pieceType, x, y, 0, tileRotation);
             GameObject newHallPiece = Instantiate(gridMap[x, y].gridSectionType, gridMap[x, y].position, gridMap[x, y].rotation);
+            if(firstDoorBool == true)
+            {
+                Debug.Log("X: " + x + " Y: " + y + "To the cori Left/corn left");
+            }
+            if (secondDoorBool == true)
+            {
+                Debug.Log("X: " + x + " Y: " + y + "To the cori right/corn Forward");
+            }
             newHallPiece.GetComponent<DoorPlacer>().AddDoor(firstDoorBool, secondDoorBool);
         }
 

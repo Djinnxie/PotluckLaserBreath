@@ -8,7 +8,7 @@ public class GridSection
     public  Vector3 position;
     public Quaternion rotation;
     public int[] coords { get; set; }
-    public int rot;
+    public int gridRot;
     public int roomSize = 7 * 2;
 
     //public bool willDraw { get; set; }
@@ -21,6 +21,7 @@ public class GridSection
         position = new Vector3(x * roomSize, z * roomSize, y * roomSize);
         coords = new int[3] { x, y, z };
 
+        gridRot = rot;
         switch (rot)
         {
             

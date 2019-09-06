@@ -338,10 +338,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67f68fd7b73e1e74aa7171f0d72b3411, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  topLeft: {fileID: 6727708630384805515}
-  topRight: {fileID: 3361093522986218430}
-  bottomLeft: {fileID: 7827088028773309565}
-  bottomRight: {fileID: 2452276052060364911}
+  topLeft: {fileID: 7827088028773309565}
+  topRight: {fileID: 2452276052060364911}
+  bottomLeft: {fileID: 6180329200941822877}
+  bottomRight: {fileID: 1495423600066735749}
 --- !u!1001 &442650687118031727
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1389,11 +1389,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8182667999590187049}
     m_Modifications:
-    - target: {fileID: -927199367670048503, guid: f8620c97548408c4e944e64787dc23de,
-        type: 3}
-      propertyPath: m_Name
-      value: floor_test (2)
-      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: f8620c97548408c4e944e64787dc23de,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1463,6 +1458,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.z
       value: 0.010000023
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: f8620c97548408c4e944e64787dc23de,
+        type: 3}
+      propertyPath: m_Name
+      value: floor_test (2)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f8620c97548408c4e944e64787dc23de, type: 3}
@@ -1937,6 +1937,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 63a4ac4745a068549a65e027b53f8c11, type: 3}
+--- !u!1 &6180329200941822877 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -927199367670048503, guid: 63a4ac4745a068549a65e027b53f8c11,
+    type: 3}
+  m_PrefabInstance: {fileID: 2802679052355447444}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &7178642634763305358 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -4216859302048453862, guid: 63a4ac4745a068549a65e027b53f8c11,
@@ -2698,12 +2704,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 3349677897163333506}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &6727708630384805515 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: -927199367670048503, guid: 63a4ac4745a068549a65e027b53f8c11,
-    type: 3}
-  m_PrefabInstance: {fileID: 3349677897163333506}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &3483466870538644314
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3086,11 +3086,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8182667999590187049}
     m_Modifications:
-    - target: {fileID: -927199367670048503, guid: f8620c97548408c4e944e64787dc23de,
-        type: 3}
-      propertyPath: m_Name
-      value: floor_test
-      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: f8620c97548408c4e944e64787dc23de,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -3160,6 +3155,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.z
       value: 0.010000023
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: f8620c97548408c4e944e64787dc23de,
+        type: 3}
+      propertyPath: m_Name
+      value: floor_test
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f8620c97548408c4e944e64787dc23de, type: 3}
@@ -22536,11 +22536,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8182667999590187049}
     m_Modifications:
-    - target: {fileID: -927199367670048503, guid: f8620c97548408c4e944e64787dc23de,
-        type: 3}
-      propertyPath: m_Name
-      value: floor_test (3)
-      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: f8620c97548408c4e944e64787dc23de,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -22610,6 +22605,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.z
       value: 0.010000023
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: f8620c97548408c4e944e64787dc23de,
+        type: 3}
+      propertyPath: m_Name
+      value: floor_test (3)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f8620c97548408c4e944e64787dc23de, type: 3}
@@ -23660,12 +23660,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 6738772446779468471}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &3361093522986218430 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: -927199367670048503, guid: 63a4ac4745a068549a65e027b53f8c11,
-    type: 3}
-  m_PrefabInstance: {fileID: 6738772446779468471}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &7319215293379955839
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -24056,7 +24050,7 @@ PrefabInstance:
     - target: {fileID: -927199367670048503, guid: 63a4ac4745a068549a65e027b53f8c11,
         type: 3}
       propertyPath: m_Name
-      value: wall_real (5)
+      value: fix
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 63a4ac4745a068549a65e027b53f8c11,
         type: 3}
@@ -24136,6 +24130,12 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 7485302268942219148}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1495423600066735749 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -927199367670048503, guid: 63a4ac4745a068549a65e027b53f8c11,
+    type: 3}
+  m_PrefabInstance: {fileID: 7485302268942219148}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &7507193718741233098
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -24143,11 +24143,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8182667999590187049}
     m_Modifications:
-    - target: {fileID: -927199367670048503, guid: f8620c97548408c4e944e64787dc23de,
-        type: 3}
-      propertyPath: m_Name
-      value: floor_test (1)
-      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: f8620c97548408c4e944e64787dc23de,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -24217,6 +24212,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.z
       value: 0.010000023
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: f8620c97548408c4e944e64787dc23de,
+        type: 3}
+      propertyPath: m_Name
+      value: floor_test (1)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f8620c97548408c4e944e64787dc23de, type: 3}
