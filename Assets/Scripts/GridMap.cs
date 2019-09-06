@@ -456,4 +456,9 @@ public class GridMap : MonoBehaviour
         }
         return gridMap[x, y];
     }
+
+    public void ResetGridMap()
+    {
+
+    }
 }

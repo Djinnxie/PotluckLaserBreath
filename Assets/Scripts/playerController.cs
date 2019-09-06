@@ -37,9 +37,12 @@ public class playerController : MonoBehaviour
     public int startingPotionCount;
     public GameObject uiObject;
     private UIController uiScript;
+    public GridMap gridMapScript;
     private int potionCount = 0;
     private bool reloading;
     private bool laserParticleStart = true;
+
+    private float playerHealth;
 
     // Start is called before the first frame update
     void Start()
@@ -234,7 +237,7 @@ public class playerController : MonoBehaviour
     private void ChangePotionCount(int countModifier)
     {
         potionCount += countModifier;
-        uiScript.ChangeText("PotionText", potionCount.ToString());
+        uiScript.ChangePotionValue(potionCount);
         //uiObject.GetComponentInChildren<Text>().text = potionCount.ToString();
     }
 
@@ -255,7 +258,38 @@ public class playerController : MonoBehaviour
     }
     private void SetLaserChargeText()
     {
-        int laserChargeInt = Mathf.RoundToInt(laserCharge);
-        uiScript.ChangeText("LaserText", laserChargeInt.ToString());
+        uiScript.ChangeLaserCharge(laserCharge, laserChargeMax);
+    }
+
+    public float GetHealth()
+    {
+        return playerHealth;
+    }
+
+    public void SetHealth(float newHealth)
+    {
+        playerHealth = newHealth;
+    }
+
+    public void TakeDamage(float damage)
+    {
+        playerHealth -= damage;
+
+        if (playerHealth <= 0)
+        {
+            PlayerIsDead();
+        }
+    }
+
+    private void PlayerIsDead()
+    {
+        uiScript.ResetUI();
+        gridMapScript.ResetGridMap();
+        ResetPlayer();
+    }
+
+    public void ResetPlayer()
+    {
+
     }
 }
