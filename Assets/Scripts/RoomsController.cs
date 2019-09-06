@@ -502,7 +502,7 @@ public class RoomsController : MonoBehaviour
         //if it fits
         if (roomWorks)
         {
-            //Debug.Log("creating room at" + (targetX) + ", " + (targetY));
+            Debug.Log("creating room at" + (targetX) + ", " + (targetY));
             return count;
         }
         //if its a square and doesnt fit or if its been rotated all the way already, dont bother rotating it.
@@ -537,8 +537,8 @@ public class RoomsController : MonoBehaviour
                 //Debug.Log("Room X: " + newX + " Room Y: " + newY);
                 newRoom.roomPieces[x, y] = new RoomSection(newRoom, x + gridPositionX, y + gridPositionY, 0, newRoom.rot);
                 gridMapScript.GetGridMap()[x+gridPositionX,y+gridPositionY] = newRoom.roomPieces[x, y];
-        Debug.Log("Room Piece X " + gridMapScript.GetGridMap()[x+gridPositionX, y + gridPositionY].coords[0]
-            + " Room Piece Y " + gridMapScript.GetGridMap()[x+gridPositionX, y + gridPositionY].coords[1]);
+        //Debug.Log("Room Piece X " + gridMapScript.GetGridMap()[x+gridPositionX, y + gridPositionY].coords[0]
+         //   + " Room Piece Y " + gridMapScript.GetGridMap()[x+gridPositionX, y + gridPositionY].coords[1]);
             }
         }
 

@@ -92,6 +92,7 @@ public class GridMap : MonoBehaviour
     private bool initRooms = false;
     private int[] currentHall;
     private int[] previousHall;
+    private bool placedPrison;
 
     // Start is called before the first frame update
     public void Start()
@@ -120,9 +121,18 @@ public class GridMap : MonoBehaviour
     public void createHall(int x, int y, int count, int prev)
     {
         GameObject pieceType = corridorObject;
-        Debug.Log("-------------");
+        //Debug.Log("-------------");
         int[] nextHall = chooseNextHall(x, y, 0);
         int tileRotation = 0;
+
+        if (placedPrison == false)
+        {
+            BaseRoom prisonRoom = new BaseRoom(roomControllerScript.roomsTypes[5]);
+
+            prisonRoom.Rotate(0);
+            roomControllerScript.AddRoomToList(prisonRoom, x-2, y - 3, 0);
+            placedPrison = true;
+        }
 
         //rotation code
         if (Mathf.Abs(nextHall[2] - previousHall[2]) == 1|| Mathf.Abs(nextHall[2] - previousHall[2]) == 3)
@@ -324,7 +334,7 @@ public class GridMap : MonoBehaviour
                 break;
         }
 
-        Debug.Log("next X: " + newX + " next Y: " + newY);
+        //Debug.Log("next X: " + newX + " next Y: " + newY);
 
         // out of bounds sanity check
         if (newX < innerGridDistance || newY < innerGridDistance || newX>innerGridSizeX+innerGridDistance || newY>innerGridSizeY+innerGridDistance)
