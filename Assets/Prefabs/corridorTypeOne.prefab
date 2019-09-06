@@ -171,7 +171,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8768251117736242291
 Transform:
   m_ObjectHideFlags: 0
@@ -399,6 +399,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6749562126958896940}
   - component: {fileID: 6022973631015721408}
+  - component: {fileID: 1166048912651263951}
   m_Layer: 0
   m_Name: corridorTypeOne
   m_TagString: Untagged
@@ -444,6 +445,23 @@ MonoBehaviour:
   - interior: {fileID: 8279389255442252092}
   - interior: {fileID: 2075395941749929048}
   - interior: {fileID: 2854812050717776879}
+  wallGen: []
+--- !u!114 &1166048912651263951
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8708218643865102106}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7643eb2bf0a149439c08336b061f334, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  firstDoor: {fileID: 4572220745207297486}
+  secondDoor: {fileID: 4551573741994743239}
+  bothDoor: {fileID: 4629304684734930019}
+  noDoor: {fileID: 2683027884152244666}
 --- !u!1001 &84673474436456959
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2412,11 +2430,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1384934767066846011}
     m_Modifications:
-    - target: {fileID: 1484522800929804251, guid: 10a387bdbde31b04399e9b9123d060ad,
-        type: 3}
-      propertyPath: m_Name
-      value: flag-stand (1)
-      objectReference: {fileID: 0}
     - target: {fileID: 2504366738539642312, guid: 10a387bdbde31b04399e9b9123d060ad,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2481,6 +2494,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.z
       value: 0.10762996
+      objectReference: {fileID: 0}
+    - target: {fileID: 1484522800929804251, guid: 10a387bdbde31b04399e9b9123d060ad,
+        type: 3}
+      propertyPath: m_Name
+      value: flag-stand (1)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 10a387bdbde31b04399e9b9123d060ad, type: 3}
@@ -9146,11 +9164,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8346928884268162399}
     m_Modifications:
-    - target: {fileID: -927199367670048503, guid: f8620c97548408c4e944e64787dc23de,
-        type: 3}
-      propertyPath: m_Name
-      value: floor_test
-      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: f8620c97548408c4e944e64787dc23de,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -9220,6 +9233,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.z
       value: 0.010000019
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: f8620c97548408c4e944e64787dc23de,
+        type: 3}
+      propertyPath: m_Name
+      value: floor_test
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f8620c97548408c4e944e64787dc23de, type: 3}
@@ -13447,16 +13465,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8346928884268162399}
     m_Modifications:
-    - target: {fileID: -927199367670048503, guid: b31f0f2d6d26d71408cff46dd816fafc,
-        type: 3}
-      propertyPath: m_Name
-      value: roof-straight
-      objectReference: {fileID: 0}
-    - target: {fileID: -927199367670048503, guid: b31f0f2d6d26d71408cff46dd816fafc,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: b31f0f2d6d26d71408cff46dd816fafc,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -13526,6 +13534,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.z
       value: 0.00817675
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: b31f0f2d6d26d71408cff46dd816fafc,
+        type: 3}
+      propertyPath: m_Name
+      value: roof-straight
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: b31f0f2d6d26d71408cff46dd816fafc,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b31f0f2d6d26d71408cff46dd816fafc, type: 3}
@@ -14192,11 +14210,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1384934767066846011}
     m_Modifications:
-    - target: {fileID: 1484522800929804251, guid: 10a387bdbde31b04399e9b9123d060ad,
-        type: 3}
-      propertyPath: m_Name
-      value: flag-stand
-      objectReference: {fileID: 0}
     - target: {fileID: 2504366738539642312, guid: 10a387bdbde31b04399e9b9123d060ad,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -14251,6 +14264,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 180.00002
+      objectReference: {fileID: 0}
+    - target: {fileID: 1484522800929804251, guid: 10a387bdbde31b04399e9b9123d060ad,
+        type: 3}
+      propertyPath: m_Name
+      value: flag-stand
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 10a387bdbde31b04399e9b9123d060ad, type: 3}

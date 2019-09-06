@@ -518,7 +518,7 @@ public class RoomsController : MonoBehaviour
         }
     }
 
-    public void AddRoomToList(BaseRoom newRoom, int gridPositionX, int gridPositionY, int rotation)
+    public GameObject AddRoomToList(BaseRoom newRoom, int gridPositionX, int gridPositionY, int rotation)
     {
 
         newRoom.SetPosition(gridPositionX, gridPositionY, 0);
@@ -544,9 +544,11 @@ public class RoomsController : MonoBehaviour
 
         newRoom.Rotate(rotation);
 
-        Instantiate(newRoom.roomObject, newRoom.position,
+        GameObject newRoomObject = Instantiate(newRoom.roomObject, newRoom.position,
                             newRoom.rotation);
         roomCount += 1;
+
+        return newRoomObject;
     }
 
 }

@@ -125,12 +125,14 @@ public class GridMap : MonoBehaviour
         int[] nextHall = chooseNextHall(x, y, 0);
         int tileRotation = 0;
 
+        GameObject newRoomObject;
+
         if (placedPrison == false)
         {
             BaseRoom prisonRoom = new BaseRoom(roomControllerScript.roomsTypes[5]);
 
             prisonRoom.Rotate(0);
-            roomControllerScript.AddRoomToList(prisonRoom, x-2, y - 3, 0);
+            newRoomObject = roomControllerScript.AddRoomToList(prisonRoom, x-2, y - 3, 0);
             placedPrison = true;
         }
 
@@ -216,7 +218,10 @@ public class GridMap : MonoBehaviour
         }
 
 
-        
+
+        bool firstDoorBool = false;
+        bool secondDoorBool = false;
+
         // if its the last piece, cap it off with an end piece
         if (count == hallwaySegments - 1)
         {
@@ -234,45 +239,190 @@ public class GridMap : MonoBehaviour
                 int[] tryRoom = getWallFace(previousHall[2], nextHall[2]);
 
                 // room code
-                BaseRoom roomToTry = new BaseRoom(roomControllerScript.roomsTypes[Random.Range(0, 5)]);
+                //BaseRoom roomToTry = new BaseRoom(roomControllerScript.roomsTypes[Random.Range(0, 5)]);
 
-                //BaseRoom roomToTry = new BaseRoom(roomControllerScript.roomsTypes[4]);
+                BaseRoom roomToTry = new BaseRoom(roomControllerScript.roomsTypes[0]);
 
                 for (int v=0;v<2;v++)
-            {
-                //Debug.Log("trying position " +  tryRoom[v]);
-                int newX = x;
-                int newY = y;
-                switch (tryRoom[v])
                 {
-                    case 0:
-                        newY += 1;
-                        break;
-                    case 1:
-                        newX += 1;
-                        break;
-                    case 2:
-                            newY -= roomToTry.length;
-                        break;
-                    case 3:
-                            newX -= roomToTry.width;
-                        break;
+                    //Debug.Log("trying position " +  tryRoom[v]);
+                    int newX = x;
+                    int newY = y;
+                    int wallDoorLocation = 0;
+                    
+                    switch (tryRoom[v])
+                    {
+                        case 0:
+                            newY += 1;
+                            if(v == 0)
+                            {
+                                wallDoorLocation = 0;
+                            }
+                            else
+                            {
 
-                }
-                int canFit = roomControllerScript.CanRoomFit(newX, newY, roomToTry, 0);
-                if (canFit != -1)
-                {
-                    //Debug.Log("can fit at " + newX + ", " + newY);
-                    roomControllerScript.AddRoomToList(roomToTry, newX, newY, canFit);
+                                wallDoorLocation = 2;
+                            }
+                            break;
+                        case 1:
+                            newX += 1;
+                            if (v == 0)
+                            {
+                                wallDoorLocation = 1;
+                            }
+                            else
+                            {
+                                wallDoorLocation = 3;
+                            }
+                            
+                            break;
+                        case 2:
+                            newY -= roomToTry.length;
+                            if (v == 0)
+                            {
+                                wallDoorLocation = 2;
+                            }
+                            else
+                            {
+                                wallDoorLocation = 0;
+                            }
+
+                            break;
+                        case 3:
+                            newX -= roomToTry.width;
+                            if (v == 0)
+                            {
+                                wallDoorLocation = 3;
+                            }
+                            else
+                            {
+                                wallDoorLocation = 1;
+                            }
+                            break;
+
+                    }
+                    int canFit = roomControllerScript.CanRoomFit(newX, newY, roomToTry, 0);
+                    if (canFit != -1)
+                    {
+                        //Debug.Log("can fit at " + newX + ", " + newY);
+                        newRoomObject = roomControllerScript.AddRoomToList(roomToTry, newX, newY, canFit);
+                        switch (tryRoom[v])
+                        {
+                            case 0:
+                                if (v == 0)
+                                {
+                                    if (pieceType.name == "corridorTypeOne")
+                                    {
+                                        secondDoorBool = true;
+                                    }
+                                    else if (pieceType.name == "Corner")
+                                    {
+                                        secondDoorBool = true;
+                                    }
+                                }
+                                else
+                                {
+
+                                    if (pieceType.name == "corridorTypeOne")
+                                    {
+                                        firstDoorBool = true;
+                                    }
+                                    else if (pieceType.name == "Corner")
+                                    {
+                                        firstDoorBool = true;
+                                    }
+                                }
+                                break;
+                            case 1:
+                                if (v == 0)
+                                {
+                                    if (pieceType.name == "corridorTypeOne")
+                                    {
+                                        secondDoorBool = true;
+                                    }
+                                    else if (pieceType.name == "Corner")
+                                    {
+                                        secondDoorBool = true;
+                                    }
+                                }
+                                else
+                                {
+                                    if (pieceType.name == "corridorTypeOne")
+                                    {
+                                        firstDoorBool = true;
+                                    }
+                                    else if (pieceType.name == "Corner")
+                                    {
+                                        firstDoorBool = true;
+                                    }
+                                }
+
+                                break;
+                            case 2:
+                                if (v == 0)
+                                {
+                                    if (pieceType.name == "corridorTypeOne")
+                                    {
+                                        secondDoorBool = true;
+                                    }
+                                    else if (pieceType.name == "Corner")
+                                    {
+                                        secondDoorBool = true;
+                                    }
+                                }
+                                else
+                                {
+                                    if (pieceType.name == "corridorTypeOne")
+                                    {
+                                        firstDoorBool = true;
+                                    }
+                                    else if (pieceType.name == "Corner")
+                                    {
+                                        firstDoorBool = true;
+                                    }
+                                }
+
+                                break;
+                            case 3:
+                                if (v == 0)
+                                {
+                                    if (pieceType.name == "corridorTypeOne")
+                                    {
+                                        secondDoorBool = true;
+                                    }
+                                    else if (pieceType.name == "Corner")
+                                    {
+                                        secondDoorBool = true;
+                                    }
+                                }
+                                else
+                                {
+                                    if (pieceType.name == "corridorTypeOne")
+                                    {
+                                        firstDoorBool = true;
+                                    }
+                                    else if (pieceType.name == "Corner")
+                                    {
+                                        firstDoorBool = true;
+                                    }
+                                }
+                                break;
+
+                        }
+                        if (newRoomObject.GetComponent<WallPlacer>() != null)
+                        {
+                            newRoomObject.GetComponent<WallPlacer>().RemoveWall(wallDoorLocation);
+                        }
                         break;
-                }
+                    }
                 }
             }
 
             //roomControllerScript.CanRoomFit(0, 0, roomControllerScript.roomsTypes[0]);
 
             gridMap[x, y] = new CorridorSection(pieceType, x, y, 0, tileRotation);
-            GameObject newRoom = Instantiate(gridMap[x, y].gridSectionType, gridMap[x, y].position, gridMap[x, y].rotation);
+            GameObject newHallPiece = Instantiate(gridMap[x, y].gridSectionType, gridMap[x, y].position, gridMap[x, y].rotation);
+            newHallPiece.GetComponent<DoorPlacer>().AddDoor(firstDoorBool, secondDoorBool);
         }
 
 
