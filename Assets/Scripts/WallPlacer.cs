@@ -20,7 +20,7 @@ public class WallPlacer : MonoBehaviour
         
     }
 
-    void RemoveWall(int direction)
+    public void RemoveWall(int direction)
     {
         switch (direction)
         {
