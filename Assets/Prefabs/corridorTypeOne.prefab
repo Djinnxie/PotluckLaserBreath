@@ -302,7 +302,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &6660020215137976421
 Transform:
   m_ObjectHideFlags: 0
@@ -446,6 +446,7 @@ MonoBehaviour:
   - interior: {fileID: 2075395941749929048}
   - interior: {fileID: 2854812050717776879}
   wallGen: []
+<<<<<<< HEAD
 --- !u!114 &1166048912651263951
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -462,6 +463,8 @@ MonoBehaviour:
   secondDoor: {fileID: 4551573741994743239}
   bothDoor: {fileID: 4629304684734930019}
   noDoor: {fileID: 2683027884152244666}
+=======
+>>>>>>> 0b0fb64c067d3d03ff81715b1c51e97cc4e93edc
 --- !u!1001 &84673474436456959
 PrefabInstance:
   m_ObjectHideFlags: 0
