@@ -42,6 +42,7 @@ public class BaseRoom
         {
             bottomLeft[1] = y - (length / 2);
         }
+
         else
         {
             bottomLeft[1] = y - ((length - 1) / 2);
@@ -124,22 +125,47 @@ public class BaseRoom
         coords = new int[3] { x, y, z };
 
         // move the rooms to sit on the grid
+
+        //if width is even
         if (width % 2 == 0)
         {
             bottomLeft[0] = x - (width / 2);
             newWidth = (width/2)*(roomSize/ 2);
 
         }
+        //if width is odd and greater than 1
+        else if (width % 2 == 1 && width > 2)
+        {
+            bottomLeft[0] = x - ((width - 1) / 2);
+            newWidth = ((width - 1) / 2) * (roomSize / 2);
+            if(width == 3)
+            {
+                newWidth += roomSize/2;
+            }
+        }
+        //if width is 1
         else
         {
             bottomLeft[0] = x - ((width - 1) / 2);
         }
-
+        //if length is even
         if (length % 2 == 0)
         {
             bottomLeft[1] = y - (length / 2);
-            newLength = length * (roomSize / 2);
+            newLength = (length/2) * (roomSize / 2);
         }
+
+        //if length is odd and greater than 1
+        else if (length % 2 == 1 && length > 2)
+        {
+            bottomLeft[1] = y - ((length - 1) / 2);
+            newLength = ((length - 1) / 2) * (roomSize / 2);
+            if (length == 3)
+            {
+                newLength += roomSize / 2;
+            }
+        }
+        //if length is 1
         else
         {
             bottomLeft[1] = y - ((length - 1) / 2);
@@ -492,20 +518,30 @@ public class RoomsController : MonoBehaviour
         }
     }
 
-        public void AddRoomToList(BaseRoom newRoom, int gridPositionX, int gridPositionY, int rotation)
+    public void AddRoomToList(BaseRoom newRoom, int gridPositionX, int gridPositionY, int rotation)
     {
 
-               for (int x = 0; x < newRoom.width; x++)
-                {
-                    for (int y = 0; y < newRoom.length; y++)
-                    {
-                        newRoom.roomPieces[x, y] = new RoomSection(newRoom, newRoom.bottomLeft[0]+x, newRoom.bottomLeft[1]+y, 0, newRoom.rot);
-                        gridMapScript.GetGridMap()[x + gridPositionX, y + gridPositionY] = newRoom.roomPieces[x, y];
-                        //Debug.Log(gridMapScript.GetGridMap()[x + gridPositionX, y + gridPositionY].coords[0]);
-                    }
-                }
-        
         newRoom.SetPosition(gridPositionX, gridPositionY, 0);
+        Debug.Log("Room Number: " + roomCount);
+
+        int newX;
+        int newY;
+
+        Debug.Log("room Width: " + newRoom.width + "room Length: " + newRoom.length);
+        for (int x = 0; x < newRoom.width; x++)
+        {
+            for (int y = 0; y < newRoom.length; y++)
+            {
+                newX = newRoom.bottomLeft[0] + x;
+                newY = newRoom.bottomLeft[1] + y;
+                //Debug.Log("Room X: " + newX + " Room Y: " + newY);
+                newRoom.roomPieces[x, y] = new RoomSection(newRoom, x + gridPositionX, y + gridPositionY, 0, newRoom.rot);
+                gridMapScript.GetGridMap()[x+gridPositionX,y+gridPositionY] = newRoom.roomPieces[x, y];
+        Debug.Log("Room Piece X " + gridMapScript.GetGridMap()[x+gridPositionX, y + gridPositionY].coords[0]
+            + " Room Piece Y " + gridMapScript.GetGridMap()[x+gridPositionX, y + gridPositionY].coords[1]);
+            }
+        }
+
         newRoom.Rotate(rotation);
 
         Instantiate(newRoom.roomObject, newRoom.position,

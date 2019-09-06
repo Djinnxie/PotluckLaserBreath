@@ -80,8 +80,8 @@ public class GridMap : MonoBehaviour
     private GridSection[,] gridMap;
     private PathLogic corridorPath;
 
-    public int innerGridSizeX { get; set; } = 5;
-    public int innerGridSizeY { get; set; } = 5;
+    public int innerGridSizeX = 5;
+    public int innerGridSizeY= 5;
     public int innerGridDistance = 3;
     public int outerGridSizeX { get; set; } = 11;
     public int outerGridSizeY { get; set; } = 11;
@@ -120,6 +120,7 @@ public class GridMap : MonoBehaviour
     public void createHall(int x, int y, int count, int prev)
     {
         GameObject pieceType = corridorObject;
+        Debug.Log("-------------");
         int[] nextHall = chooseNextHall(x, y, 0);
         int tileRotation = 0;
 
@@ -200,7 +201,7 @@ public class GridMap : MonoBehaviour
 
         if (nextHall[2] == -1)
         {
-            Debug.Log("giving up on creating hall " + count);
+            //Debug.Log("giving up on creating hall " + count);
             return;
         }
 
@@ -218,15 +219,18 @@ public class GridMap : MonoBehaviour
             {
 
 
-            // try and create rooms
-            //Debug.Log(3 - previousHall[2]);
-            int[] tryRoom = getWallFace(previousHall[2],nextHall[2]);
+                // try and create rooms
+                //Debug.Log(3 - previousHall[2]);
+                int[] tryRoom = getWallFace(previousHall[2], nextHall[2]);
 
                 // room code
-                BaseRoom roomToTry = new BaseRoom(roomControllerScript.roomsTypes[Random.Range(0, 1)]);
-            for(int v=0;v<2;v++)
+                BaseRoom roomToTry = new BaseRoom(roomControllerScript.roomsTypes[Random.Range(0, 5)]);
+
+                //BaseRoom roomToTry = new BaseRoom(roomControllerScript.roomsTypes[4]);
+
+                for (int v=0;v<2;v++)
             {
-                Debug.Log("trying position " +  tryRoom[v]);
+                //Debug.Log("trying position " +  tryRoom[v]);
                 int newX = x;
                 int newY = y;
                 switch (tryRoom[v])
@@ -238,10 +242,10 @@ public class GridMap : MonoBehaviour
                         newX += 1;
                         break;
                     case 2:
-                            newY -= 1;// roomToTry.width+1;
+                            newY -= roomToTry.length;
                         break;
                     case 3:
-                            newX -= roomToTry.length+1;
+                            newX -= roomToTry.width;
                         break;
 
                 }
@@ -250,7 +254,7 @@ public class GridMap : MonoBehaviour
                 {
                     //Debug.Log("can fit at " + newX + ", " + newY);
                     roomControllerScript.AddRoomToList(roomToTry, newX, newY, canFit);
-                        //break;
+                        break;
                 }
                 }
             }
@@ -278,15 +282,25 @@ public class GridMap : MonoBehaviour
     public int[] chooseNextHall(int x, int y, int count)
     {
         //Debug.Log("try " + count);
-        if (count > 8)
+/*        if (count > 8)
         {
             return new int[3] { -1, -1, -1 };
-        }
+        }*/
         int newX = x;
         int newY = y;
         int direction = -1;
 
-        switch (Random.Range(0, 4))
+        //randomizes direction
+        int newDirection = Random.Range(0, 4);
+
+        //if randomizing direction fails, run through directions starting with up
+        if (count > 3)
+        {
+            newDirection = count - 4;
+        }
+
+        // directions
+        switch (newDirection)
         {
             // up
             case (0):
@@ -310,10 +324,12 @@ public class GridMap : MonoBehaviour
                 break;
         }
 
+        Debug.Log("next X: " + newX + " next Y: " + newY);
+
         // out of bounds sanity check
-        if (newX < innerGridDistance || newY < innerGridDistance || newX>=innerGridSizeX+innerGridDistance || newY>=innerGridSizeY+innerGridDistance)
+        if (newX < innerGridDistance || newY < innerGridDistance || newX>innerGridSizeX+innerGridDistance || newY>innerGridSizeY+innerGridDistance)
         {
-            return chooseNextHall(x, y, count++);
+            return chooseNextHall(x, y, count += 1);
         }
 
         // if position is vacant
@@ -324,7 +340,18 @@ public class GridMap : MonoBehaviour
         // else, try again
         else
         {
-            return chooseNextHall(x, y, count+=1);
+            if (count > 6)
+            {
+
+               // Debug.Log("try " + count);
+                return new int[3] { -1, -1, -1 };
+
+            }
+            else
+            {
+                return chooseNextHall(x, y, count += 1);
+            }
+                
         }
 
 
