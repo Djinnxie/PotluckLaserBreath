@@ -7,19 +7,34 @@ using UnityEngine;
 public class Interiors
 {
     public GameObject interior;
-    
+
     public Interiors()
     {
-        
+
     }
 
 }
-    public class roomRandomizer : MonoBehaviour
+[System.Serializable]
+public class Walls
+{
+    public GameObject wallGen;
+    public int rotation;
+
+    public Walls()
+    {
+
+    }
+
+}
+
+public class roomRandomizer : MonoBehaviour
 {
     //public int number;
     public List<Interiors> roomTypes = new List<Interiors>();
+    bool isHallPice =  false;
+    public List<Walls> wallGen = new List<Walls>();
 
-    
+
     // Start is called before the first frame update
     void Start() {
         roomTypes[Random.Range(0, roomTypes.Count)].interior.SetActive(true);
