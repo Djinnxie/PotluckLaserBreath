@@ -66,11 +66,12 @@ public class PathLogic
     }
 }
 
-
+[System.Serializable]
 public class GridMap : MonoBehaviour
 {
     public int gridWidth;
     public int gridLength;
+    public RoomsController roomControllerScript;
     public GameObject corridorObject;
     public GameObject tJunctionObject;
     public GameObject endObject;
@@ -118,13 +119,9 @@ public class GridMap : MonoBehaviour
 
     public void createHall(int x, int y, int count, int prev)
     {
-        //Debug.Log("creating room " + count);
-
         GameObject pieceType = corridorObject;
         int[] nextHall = chooseNextHall(x, y, 0);
         int tileRotation = 0;
-        //int rotationForNextTime = 0;
-
 
         //rotation code
         if (Mathf.Abs(nextHall[2] - previousHall[2]) == 1|| Mathf.Abs(nextHall[2] - previousHall[2]) == 3)
@@ -199,18 +196,17 @@ public class GridMap : MonoBehaviour
             tileRotation = nextHall[2];
             // straight
             pieceType = corridorObject;
-
         }
 
         if (nextHall[2] == -1)
         {
-            //Debug.Log("giving up on creating hall " + count);
+            Debug.Log("giving up on creating hall " + count);
             return;
         }
 
 
         
-        // if its the last piece, cap it off with an endpice
+        // if its the last piece, cap it off with an end piece
         if (count == hallwaySegments - 1)
         {
             gridMap[x, y] = new CorridorSection(pieceType, x, y, 0, previousHall[2]);
@@ -218,8 +214,51 @@ public class GridMap : MonoBehaviour
         }
         else
         {
+            if (roomControllerScript.roomCount < roomControllerScript.maxRooms)
+            {
+
+
+            // try and create rooms
+            //Debug.Log(3 - previousHall[2]);
+            int[] tryRoom = getWallFace(previousHall[2],nextHall[2]);
+
+                // room code
+                BaseRoom roomToTry = new BaseRoom(roomControllerScript.roomsTypes[Random.Range(0, 1)]);
+            for(int v=0;v<2;v++)
+            {
+                Debug.Log("trying position " +  tryRoom[v]);
+                int newX = x;
+                int newY = y;
+                switch (tryRoom[v])
+                {
+                    case 0:
+                        newY += 1;
+                        break;
+                    case 1:
+                        newX += 1;
+                        break;
+                    case 2:
+                            newY -= 1;// roomToTry.width+1;
+                        break;
+                    case 3:
+                            newX -= roomToTry.length+1;
+                        break;
+
+                }
+                int canFit = roomControllerScript.CanRoomFit(newX, newY, roomToTry, 0);
+                if (canFit != -1)
+                {
+                    //Debug.Log("can fit at " + newX + ", " + newY);
+                    roomControllerScript.AddRoomToList(roomToTry, newX, newY, canFit);
+                        //break;
+                }
+                }
+            }
+
+            //roomControllerScript.CanRoomFit(0, 0, roomControllerScript.roomsTypes[0]);
+
             gridMap[x, y] = new CorridorSection(pieceType, x, y, 0, tileRotation);
-            Instantiate(gridMap[x, y].gridSectionType, gridMap[x, y].position, gridMap[x, y].rotation);
+            GameObject newRoom = Instantiate(gridMap[x, y].gridSectionType, gridMap[x, y].position, gridMap[x, y].rotation);
         }
 
 
@@ -272,7 +311,7 @@ public class GridMap : MonoBehaviour
         }
 
         // out of bounds sanity check
-        if (newX < 0 || newY < 0 || newX>=innerGridSizeX+innerGridDistance || newY>=innerGridSizeY+innerGridDistance)
+        if (newX < innerGridDistance || newY < innerGridDistance || newX>=innerGridSizeX+innerGridDistance || newY>=innerGridSizeY+innerGridDistance)
         {
             return chooseNextHall(x, y, count++);
         }
@@ -289,6 +328,85 @@ public class GridMap : MonoBehaviour
         }
 
 
+    }
+
+    public int[] getWallFace(int previous, int next)
+    {
+
+        if (Mathf.Abs(previous - next) % 2 == 0)
+        {
+            if (previous == 0 || previous == 2)
+            {
+                return (new int[2] { 3, 1 });
+            }
+            else
+            {
+                return (new int[2] { 0, 2 });
+            }
+        }
+        else
+        {
+            switch (previous)
+            {
+                // from below
+                case 0:
+                    switch (next)
+                    {
+                        // to the right
+                        case 1:
+                            return (new int[2] { 0, 3 });
+                            break;
+                        // to the left
+                        case 3:
+                            return (new int[2] { 0, 1 });
+                            break;
+                    }
+                    break;
+                // from the left
+                case 1:
+                    switch (next)
+                    {
+                        // to above
+                        case 0:
+                            return (new int[2] { 1, 2 });
+                            break;
+                        // to below
+                        case 2:
+                            return (new int[2] { 1, 0 });
+                            break;
+                    }
+                    break;
+                // from the top
+                case 2:
+                    switch (next)
+                    {
+                        // to the right
+                        case 1:
+                            return (new int[2] { 2, 3 });
+                            break;
+                        // to the left
+                        case 3:
+                            return (new int[2] { 2, 1 });
+                            break;
+                    }
+                    break;
+                // from the right
+                case 3:
+                    switch (next)
+                    {
+                        // to above
+                        case 0:
+                            return (new int[2] { 3, 2 });
+                            break;
+                        // to below
+                        case 2:
+                            return (new int[2] { 3, 0 });
+                            break;
+                    }
+                    break;
+            }
+        }
+        return (new int[2] { -1, -1 });
     }
 
     public GridSection[,] GetGridMap()

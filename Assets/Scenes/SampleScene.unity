@@ -531,7 +531,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &111701180
 Transform:
   m_ObjectHideFlags: 0
@@ -540,7 +540,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 111701179}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -112.74097, y: -89.80063, z: -24.26148}
+  m_LocalPosition: {x: -71, y: -89.80063, z: 17.7}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 932610200}
@@ -687,6 +687,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gridMapScript: {fileID: 671508480}
   maxRooms: 1
+  roomCount: 0
   roomsTypes:
   - width: 1
     length: 2
@@ -1791,15 +1792,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2012731743, guid: 994bed472aef3a543a18d20a057f9102, type: 3}
       propertyPath: m_BoundingSphereOverride.x
-      value: 0
+      value: 3.0666e-41
       objectReference: {fileID: 0}
     - target: {fileID: 2012731743, guid: 994bed472aef3a543a18d20a057f9102, type: 3}
       propertyPath: m_BoundingSphereOverride.y
-      value: 0
+      value: 1.02e-43
       objectReference: {fileID: 0}
     - target: {fileID: 2012731743, guid: 994bed472aef3a543a18d20a057f9102, type: 3}
       propertyPath: m_BoundingSphereOverride.z
-      value: 0
+      value: -6.9e-44
       objectReference: {fileID: 0}
     - target: {fileID: 2012731743, guid: 994bed472aef3a543a18d20a057f9102, type: 3}
       propertyPath: m_BoundingSphereOverride.w
@@ -2751,6 +2752,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gridWidth: 6
   gridLength: 6
+  roomControllerScript: {fileID: 671508481}
   corridorObject: {fileID: 8708218643865102106, guid: 01b88b35d47608344a3399e016bd5fdf,
     type: 3}
   tJunctionObject: {fileID: 4785367781808309408, guid: 615b326079cccf24ca9507e12446a36b,
@@ -2759,9 +2761,9 @@ MonoBehaviour:
     type: 3}
   cornerObject: {fileID: 830879091819574651, guid: 028cb335e0169974cae62a32cdb6dfb5,
     type: 3}
-  roomSize: 0
+  roomSize: 14
   innerGridDistance: 3
-  hallwaySegments: 8
+  hallwaySegments: 15
 --- !u!114 &671508481
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2775,11 +2777,32 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gridMapScript: {fileID: 671508480}
-  maxRooms: 50
+  maxRooms: 5
+  roomCount: 0
   roomsTypes:
   - width: 2
     length: 1
     roomObject: {fileID: 7732319499737491638, guid: 3cbf8da660d1106479bea599aea685f5,
+      type: 3}
+    position: {x: 0, y: 0, z: 0}
+    rotation: {x: 0, y: 0, z: 0, w: 0}
+    rot: 0
+    roomSize: 14
+    bottomLeft: 
+    topRight: 
+  - width: 3
+    length: 1
+    roomObject: {fileID: 7517015632016931029, guid: ae0bb94ecd824cf4a9f5177ceb5e4fa4,
+      type: 3}
+    position: {x: 0, y: 0, z: 0}
+    rotation: {x: 0, y: 0, z: 0, w: 0}
+    rot: 0
+    roomSize: 14
+    bottomLeft: 
+    topRight: 
+  - width: 2
+    length: 2
+    roomObject: {fileID: 6123806395521581087, guid: a62f9bf3695168a4cb4ed652a2821f83,
       type: 3}
     position: {x: 0, y: 0, z: 0}
     rotation: {x: 0, y: 0, z: 0, w: 0}
@@ -3882,11 +3905,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2012731743, guid: 994bed472aef3a543a18d20a057f9102, type: 3}
       propertyPath: m_BoundingSphereOverride.x
-      value: 0
+      value: 8.07e-43
       objectReference: {fileID: 0}
     - target: {fileID: 2012731743, guid: 994bed472aef3a543a18d20a057f9102, type: 3}
       propertyPath: m_BoundingSphereOverride.y
-      value: 2.3510647e-38
+      value: 2.06e-43
       objectReference: {fileID: 0}
     - target: {fileID: 2012731743, guid: 994bed472aef3a543a18d20a057f9102, type: 3}
       propertyPath: m_BoundingSphereOverride.z
@@ -3894,7 +3917,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2012731743, guid: 994bed472aef3a543a18d20a057f9102, type: 3}
       propertyPath: m_BoundingSphereOverride.w
-      value: 2.3510647e-38
+      value: -3.3554642e+12
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 994bed472aef3a543a18d20a057f9102, type: 3}
@@ -4167,7 +4190,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2012731743, guid: 994bed472aef3a543a18d20a057f9102, type: 3}
       propertyPath: m_BoundingSphereOverride.x
-      value: 3e-45
+      value: -4.0086035e+19
       objectReference: {fileID: 0}
     - target: {fileID: 2012731743, guid: 994bed472aef3a543a18d20a057f9102, type: 3}
       propertyPath: m_BoundingSphereOverride.y
@@ -4179,7 +4202,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2012731743, guid: 994bed472aef3a543a18d20a057f9102, type: 3}
       propertyPath: m_BoundingSphereOverride.w
-      value: 1e-45
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 994bed472aef3a543a18d20a057f9102, type: 3}
@@ -4928,19 +4951,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2012731743, guid: 994bed472aef3a543a18d20a057f9102, type: 3}
       propertyPath: m_BoundingSphereOverride.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2012731743, guid: 994bed472aef3a543a18d20a057f9102, type: 3}
-      propertyPath: m_BoundingSphereOverride.y
-      value: -1.3617865e-27
-      objectReference: {fileID: 0}
-    - target: {fileID: 2012731743, guid: 994bed472aef3a543a18d20a057f9102, type: 3}
-      propertyPath: m_BoundingSphereOverride.z
       value: 8.07e-43
       objectReference: {fileID: 0}
     - target: {fileID: 2012731743, guid: 994bed472aef3a543a18d20a057f9102, type: 3}
+      propertyPath: m_BoundingSphereOverride.y
+      value: 1.84e-43
+      objectReference: {fileID: 0}
+    - target: {fileID: 2012731743, guid: 994bed472aef3a543a18d20a057f9102, type: 3}
+      propertyPath: m_BoundingSphereOverride.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2012731743, guid: 994bed472aef3a543a18d20a057f9102, type: 3}
       propertyPath: m_BoundingSphereOverride.w
-      value: 1.4033e-41
+      value: -3.9700744e+12
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 994bed472aef3a543a18d20a057f9102, type: 3}
@@ -5682,7 +5705,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1459108174}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.03, y: 0.971, z: -28.79}
+  m_LocalPosition: {x: 45.87, y: 0.94, z: 4.98}
   m_LocalScale: {x: 1, y: 1.9631, z: 1}
   m_Children:
   - {fileID: 2126839318}
@@ -17314,7 +17337,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2012731743, guid: 994bed472aef3a543a18d20a057f9102, type: 3}
       propertyPath: m_BoundingSphereOverride.x
-      value: 3e-45
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2012731743, guid: 994bed472aef3a543a18d20a057f9102, type: 3}
       propertyPath: m_BoundingSphereOverride.y
@@ -17326,7 +17349,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2012731743, guid: 994bed472aef3a543a18d20a057f9102, type: 3}
       propertyPath: m_BoundingSphereOverride.w
-      value: 1e-45
+      value: -6.258082e+12
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 994bed472aef3a543a18d20a057f9102, type: 3}

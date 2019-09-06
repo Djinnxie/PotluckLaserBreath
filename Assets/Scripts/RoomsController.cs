@@ -8,6 +8,8 @@ public class BaseRoom
     public int width;
     public int length;
 
+
+
     public GameObject roomObject;
     public Vector3 position;
     public Quaternion rotation;
@@ -142,7 +144,7 @@ public class BaseRoom
         {
             bottomLeft[1] = y - ((length - 1) / 2);
         }
-        position = new Vector3(x * roomSize * width+newWidth, z * roomSize, y * roomSize * length+newLength);// +length/2);
+        position = new Vector3(x * roomSize +newWidth, z * roomSize, y * roomSize +newLength);// +length/2);
 
     }
 }
@@ -150,7 +152,7 @@ public class RoomsController : MonoBehaviour
 {
     public GridMap gridMapScript;
     public int maxRooms;
-    private int roomCount;
+    public int roomCount = 0;
     public List<BaseRoom> roomsTypes = new List<BaseRoom>();
     public List<BaseRoom> roomsInPlay = new List<BaseRoom>();
     
@@ -159,8 +161,8 @@ public class RoomsController : MonoBehaviour
     {
         BaseRoom newRoom;
         //looping through bellow grid
-        Debug.Log(gridMapScript.outerGridSizeX / 2);
-        for (int x = gridMapScript.outerGridSizeX/2; x > gridMapScript.outerGridSizeX; x++)
+        //Debug.Log(gridMapScript.outerGridSizeX / 2);
+/*        for (int x = gridMapScript.outerGridSizeX/2; x > gridMapScript.outerGridSizeX; x++)
         {
 
             for (int y = gridMapScript.outerGridSizeY/2; y > 0; y--)
@@ -181,7 +183,7 @@ public class RoomsController : MonoBehaviour
                 }
             }
         }
-
+*/
 /*        for (int y = gridMapScript.innerGridDistance; y < gridMapScript.outerGridSizeY; y++)
         {
             for (int x = gridMapScript.innerGridDistance; x < gridMapScript.outerGridSizeX; x++)
@@ -282,9 +284,11 @@ public class RoomsController : MonoBehaviour
         
     }
 
-    bool CanRoomFit(int targetX, int targetY, BaseRoom targetRoom)
+    public bool CanRoomFit(int targetX, int targetY, BaseRoom targetRoom)
     {
-        int roomBottomLeftX, roomBottomLeftY, roomTopRightX, roomTopRightY;
+
+        return true;
+        /*int roomBottomLeftX, roomBottomLeftY, roomTopRightX, roomTopRightY;
 
         //changing where the bounds of bottom left and top right are
 
@@ -444,25 +448,69 @@ public class RoomsController : MonoBehaviour
             }
         }
 
-        return true;
+        return true;*/
     }
 
-    private void AddRoomToList(BaseRoom newRoom, int gridPositionX, int gridPositionY, int rotation)
+    public int CanRoomFit(int targetX, int targetY, BaseRoom targetRoom, int count)
     {
-
-        for (int x = 0; x < newRoom.width; x++)
+        //Debug.Log("LEN "+targetRoom.length);
+        bool roomWorks = true;
+        //int[] roomGridLocationX = new int[(targetRoom.width*targetRoom.length)];
+        //int[] roomGridLocationY = new int[(targetRoom.width * targetRoom.length)];
+        for (int x = 0; x < targetRoom.width; x++)
         {
-            for (int y = 0; y < newRoom.length; y++)
+            for (int y = 0; y < targetRoom.length; y++)
             {
-                newRoom.roomPieces[x, y] = new RoomSection(newRoom, newRoom.bottomLeft[0]+x, newRoom.bottomLeft[1]+y, 0, newRoom.rot);
-                gridMapScript.GetGridMap()[x + gridPositionX, y + gridPositionY] = newRoom.roomPieces[x, y];
+                if (gridMapScript.GetGridSection(targetX+x, targetY+y).coords[0]!=-1)
+                {
+                    if (roomWorks)
+                    {
+                        //Debug.Log("obstacle at position " + (targetX + x) + ", "+ (targetY + y));
+                    }
+                    //roomGridLocationX[x] = targetX + x;
+                    //roomGridLocationY[y] = targetX + x;
+                    roomWorks = false;
+                }
             }
         }
+        //if it fits
+        if (roomWorks)
+        {
+            //Debug.Log("creating room at" + (targetX) + ", " + (targetY));
+            return count;
+        }
+        //if its a square and doesnt fit or if its been rotated all the way already, dont bother rotating it.
+        if (targetRoom.width == targetRoom.length||count==3)
+        {
+            return -1;
+        }
+        else
+        {
+            // write the flip code before enabling this
+            //return CanRoomFit(targetX, targetY, targetRoom, count += 1);
+            return -1;
+        }
+    }
 
+        public void AddRoomToList(BaseRoom newRoom, int gridPositionX, int gridPositionY, int rotation)
+    {
 
+               for (int x = 0; x < newRoom.width; x++)
+                {
+                    for (int y = 0; y < newRoom.length; y++)
+                    {
+                        newRoom.roomPieces[x, y] = new RoomSection(newRoom, newRoom.bottomLeft[0]+x, newRoom.bottomLeft[1]+y, 0, newRoom.rot);
+                        gridMapScript.GetGridMap()[x + gridPositionX, y + gridPositionY] = newRoom.roomPieces[x, y];
+                        //Debug.Log(gridMapScript.GetGridMap()[x + gridPositionX, y + gridPositionY].coords[0]);
+                    }
+                }
+        
+        newRoom.SetPosition(gridPositionX, gridPositionY, 0);
+        newRoom.Rotate(rotation);
 
         Instantiate(newRoom.roomObject, newRoom.position,
                             newRoom.rotation);
+        roomCount += 1;
     }
 
 }
