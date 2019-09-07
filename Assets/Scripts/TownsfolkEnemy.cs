@@ -57,6 +57,7 @@ public class TownsfolkEnemy : MonoBehaviour
 
     private void OnTriggerStay(Collider col)
     {
+        Debug.Log("gets to triggerStay");
         if (col.gameObject.tag == "Player")
         {
             Debug.Log("collided with Player");

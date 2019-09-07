@@ -6,6 +6,10 @@ public class Potion
 {
     private GameObject potionObject;
 
+    public Potion()
+    {
+
+    }
     public Potion (GameObject p)
     {
         potionObject = p;
@@ -57,25 +61,33 @@ public class PotionController : MonoBehaviour
         int mightSpawnPotion;
 
         int randX, randY;
-        foreach (BaseRoom br in roomsScript.roomsInPlay)
+
+        int whileCount = 0;
+        for (int i = 0; i <roomsScript.roomsInPlay.Count; i++ )
         {
+            BaseRoom br = roomsScript.roomsInPlay[i];
+            whileCount = 0;
             mightSpawnPotion = Random.Range(0, potionRarity);
             if (mightSpawnPotion == 0)
             {
                 do
                 {
+                    whileCount += 1;
                     randX = Random.Range(0, br.width);
                     randY = Random.Range(0, br.length);
+                } while (br.GetRoomSectionArray()[randX, randY].hasTownsfolk == true && whileCount < 10);
 
-                } while (br.GetRoomSectionArray()[randX, randY].hasTownsfolk == true);
-
+                if (whileCount < 10)
+                {
                 br.GetRoomSectionArray()[randX, randY].hasPotion = true;
+                Potion p = new Potion();
+                GameObject go =  Instantiate(potionObject, br.GetRoomSectionArray()[randX, randY].position,
+                                br.GetRoomSectionArray()[randX, randY].rotation);
 
-                Potion p = new Potion(Instantiate(potionObject, br.GetRoomSectionArray()[randX, randY].position,
-                                br.GetRoomSectionArray()[randX, randY].rotation));
+                p.SetPotionObject(go);
                 potionList.Add(p);
-                
-             }
+                }
+            }
         }
     }
 
