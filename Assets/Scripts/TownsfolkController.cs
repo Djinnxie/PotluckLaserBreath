@@ -10,6 +10,8 @@ public class TownsfolkController : MonoBehaviour
     public int chefWeight;
     public GameObject farmerObject;
     public int farmerWeight;
+    public GameObject farmer2Object;
+    public int farmer2Weight;
     public GameObject soldierObject;
     public int soldierWeight;
 
@@ -40,7 +42,7 @@ public class TownsfolkController : MonoBehaviour
 
         GameObject newTownsfolk = bardObject;
         GridSection currentGridSection;
-        int weightTotal = bardWeight + chefWeight + farmerWeight + soldierWeight;
+        int weightTotal = bardWeight + chefWeight + farmerWeight + farmer2Weight + soldierWeight;
         int weight;
         for (int i = 0; i < numberOfTownsfolk; i++)
         {
@@ -59,7 +61,11 @@ public class TownsfolkController : MonoBehaviour
             {
                 newTownsfolk = farmerObject;
             }
-            else if (weight >= bardWeight + chefWeight + farmerWeight && weight < weightTotal)
+            else if(weight >= bardWeight + chefWeight + farmerWeight && weight < bardWeight + chefWeight + farmerWeight + farmer2Weight)
+            {
+                newTownsfolk = farmer2Object;
+            }
+            else if (weight >= bardWeight + chefWeight + farmerWeight + farmer2Weight && weight < weightTotal)
             {
                 newTownsfolk = soldierObject;
             }

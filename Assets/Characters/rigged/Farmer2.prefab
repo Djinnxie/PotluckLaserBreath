@@ -72,6 +72,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4530189010408013487}
   - component: {fileID: 5788380229372990421}
+  - component: {fileID: 5920467328954899760}
   m_Layer: 0
   m_Name: Farmer2
   m_TagString: Untagged
@@ -114,6 +115,21 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &5920467328954899760
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 613948875143220412}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0eaea04c4f98dce409f6cae2fcc1da99, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  aggroDistance: 35
+  ragdollObject: {fileID: 8146634053288708335, guid: a9889c13d210bb343a0b90f573b8c29f,
+    type: 3}
 --- !u!1 &645762715759319806
 GameObject:
   m_ObjectHideFlags: 0

@@ -450,6 +450,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7306300860804406641}
   - component: {fileID: 859961224995287051}
+  - component: {fileID: -3626536543061345487}
   m_Layer: 0
   m_Name: Bard
   m_TagString: Untagged
@@ -492,6 +493,21 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &-3626536543061345487
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5998346329640038242}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0eaea04c4f98dce409f6cae2fcc1da99, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  aggroDistance: 35
+  ragdollObject: {fileID: 8657347538401575081, guid: 0f06fd53856eb1249a926bfc685e9e1e,
+    type: 3}
 --- !u!1 &6002580115208894752
 GameObject:
   m_ObjectHideFlags: 0

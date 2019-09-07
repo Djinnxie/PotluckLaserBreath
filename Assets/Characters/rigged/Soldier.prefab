@@ -484,6 +484,7 @@ GameObject:
   m_Component:
   - component: {fileID: 185429637010478989}
   - component: {fileID: 7789191627066735351}
+  - component: {fileID: 2446304447765472093}
   m_Layer: 0
   m_Name: Soldier
   m_TagString: Untagged
@@ -526,6 +527,21 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &2446304447765472093
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3803745758834861470}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0eaea04c4f98dce409f6cae2fcc1da99, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  aggroDistance: 35
+  ragdollObject: {fileID: 6683564921115235349, guid: fb9c5d31958fb3c4d8cc322c671990f6,
+    type: 3}
 --- !u!1 &4151266057853142427
 GameObject:
   m_ObjectHideFlags: 0
