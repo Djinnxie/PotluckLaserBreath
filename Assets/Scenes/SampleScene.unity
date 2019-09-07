@@ -1636,6 +1636,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerObject: {fileID: 447451182}
+  roomsScript: {fileID: 671508481}
   potionObject: {fileID: 7679909150840690109, guid: 338e7a6325afe8043aee3d99584bad25,
     type: 3}
   potionRarity: 1
