@@ -532,6 +532,8 @@ GameObject:
   m_Component:
   - component: {fileID: 2131908986248012806}
   - component: {fileID: 8294518000398240124}
+  - component: {fileID: 4080968869457856820}
+  - component: {fileID: -2689159242028150710}
   m_Layer: 0
   m_Name: Chef
   m_TagString: Untagged
@@ -574,6 +576,41 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!195 &4080968869457856820
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3156273701994911253}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 6
+  m_Acceleration: 12
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
+--- !u!114 &-2689159242028150710
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3156273701994911253}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0eaea04c4f98dce409f6cae2fcc1da99, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  aggroDistance: 35
 --- !u!1 &3236102927102969241
 GameObject:
   m_ObjectHideFlags: 0

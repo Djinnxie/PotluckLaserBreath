@@ -29,6 +29,8 @@ public class GridMap : MonoBehaviour
     private int[] previousHall;
     private bool placedPrison;
 
+    public TownsfolkController townsfolkControllerScript;
+
     // Start is called before the first frame update
     public void Start()
     {
@@ -45,6 +47,8 @@ public class GridMap : MonoBehaviour
        
         previousHall = new int[3] { innerGridDistance, innerGridDistance-1, 0 };
         createHall(innerGridDistance, innerGridDistance, 0, 0);
+
+        townsfolkControllerScript.SummonTownsfolk();
     }
 
     // Update is called once per frame
