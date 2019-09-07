@@ -42,6 +42,8 @@ public class playerController : MonoBehaviour
     private bool reloading;
     private bool laserParticleStart = true;
 
+    public LaserController laserControllerScript;
+
     private float playerHealth;
 
     // Start is called before the first frame update
@@ -71,8 +73,32 @@ public class playerController : MonoBehaviour
         bool isMovingx = false;
         bool isMovingy = false;
 
+
+        if (Input.GetAxis("Mouse X") != 0 || Input.GetAxis("Mouse Y") != 0)
+        {
+
+            // get left to right mouse movement
+            float yRot = Input.GetAxis("Mouse X") * rotationSpeed;
+
+            // get up and down mouse movement
+            float xRot = Input.GetAxis("Mouse Y") * cameraSpeed;
+
+            // rotate the player model left and right
+            transform.localRotation *= Quaternion.Euler(0f, yRot, 0f);
+
+            // rotates the camera up and down
+            laserTransform.localRotation *= Quaternion.Euler(-xRot, 0f, 0f);
+            laserTransform2.localRotation *= Quaternion.Euler(-xRot, 0f, 0f);
+            cameraTransform.localRotation *= Quaternion.Euler(-xRot, 0f, 0f);
+
+            // clamps the max up and down view
+            cameraTransform.localRotation = ClampRotationAroundXAxis(cameraTransform.localRotation);
+        }
+
         if ((Input.GetKey(KeyCode.Space) || Input.GetMouseButton(0)) && RemainingLaserCharge())
         {
+
+            laserControllerScript.FireLaser(cameraTransform.rotation);
             if (laserParticleStart)
             {
                 laserObject.GetComponent<ParticleSystem>().Play();
@@ -82,10 +108,12 @@ public class playerController : MonoBehaviour
         }
         else if (Input.GetKeyUp(KeyCode.Space) || Input.GetMouseButtonUp(0))
         {
+            laserControllerScript.HaltLaser();
             laserParticleStart = true;
         }
         else if (laserCharge < 1)
         {
+            laserControllerScript.HaltLaser();
             laserObject.GetComponent<ParticleSystem>().Stop();
             laserObject2.GetComponent<ParticleSystem>().Stop();
         }
@@ -166,26 +194,7 @@ public class playerController : MonoBehaviour
 
 
 
-        if (Input.GetAxis("Mouse X") != 0 || Input.GetAxis("Mouse Y") != 0)
-        {
 
-            // get left to right mouse movement
-            float yRot = Input.GetAxis("Mouse X") * rotationSpeed;
-
-            // get up and down mouse movement
-            float xRot = Input.GetAxis("Mouse Y") * cameraSpeed;
-
-            // rotate the player model left and right
-            transform.localRotation *= Quaternion.Euler(0f, yRot, 0f);
-
-            // rotates the camera up and down
-            laserTransform.localRotation *= Quaternion.Euler(-xRot, 0f, 0f);
-            laserTransform2.localRotation *= Quaternion.Euler(-xRot, 0f, 0f);
-            cameraTransform.localRotation *= Quaternion.Euler(-xRot, 0f, 0f);
-
-            // clamps the max up and down view
-            cameraTransform.localRotation = ClampRotationAroundXAxis(cameraTransform.localRotation);
-        }
 
         if ((Input.GetKey(KeyCode.LeftControl) || Input.GetKey("c")) && crouching == false)
         {

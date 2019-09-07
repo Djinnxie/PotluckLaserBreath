@@ -235,7 +235,6 @@ public class GridMap : MonoBehaviour
                         }
                         else
                         {
-                            Debug.Log("try "+tryRoom[v]+", rotation "+tileRotation);
                             int doorPlacement = tryRoom[v]+tileRotation;
                             if (doorPlacement > 3)
                             {
@@ -265,14 +264,6 @@ public class GridMap : MonoBehaviour
 
             gridMap[x, y] = new CorridorSection(pieceType, x, y, 0, tileRotation);
             GameObject newHallPiece = Instantiate(gridMap[x, y].gridSectionType, gridMap[x, y].position, gridMap[x, y].rotation);
-            if(firstDoorBool == true)
-            {
-                Debug.Log("X: " + x + " Y: " + y + "To the cori Left/corn left");
-            }
-            if (secondDoorBool == true)
-            {
-                Debug.Log("X: " + x + " Y: " + y + "To the cori right/corn Forward");
-            }
             newHallPiece.GetComponent<DoorPlacer>().AddDoor(firstDoorBool, secondDoorBool);
         }
 

@@ -502,7 +502,6 @@ public class RoomsController : MonoBehaviour
         //if it fits
         if (roomWorks)
         {
-           Debug.Log("creating room at" + (targetX) + ", " + (targetY));
            return count;
         }
         //if its a square and doesnt fit or if its been rotated all the way already, dont bother rotating it.
