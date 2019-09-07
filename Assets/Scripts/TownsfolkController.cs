@@ -13,6 +13,8 @@ public class TownsfolkController : MonoBehaviour
     private GameObject[] ragdollObjects;
     public int maxNumberRagdolls;
     private int currentRagdoll;
+    public int ragdollDeathFling;
+    public GameObject playerObject;
     // Start is called before the first frame update
     void Start()
     {
@@ -49,7 +51,7 @@ public class TownsfolkController : MonoBehaviour
         }
     }
 
-    public void DestroyTownsfolk(GameObject townsfolk)
+    public void DestroyTownsfolk(ref GameObject townsfolk)
     {
         // makes a newRagdoll object and places it in the world
         GameObject newRagdoll = Instantiate(townsfolk.GetComponent<TownsfolkEnemy>().ragdollObject,
@@ -57,24 +59,37 @@ public class TownsfolkController : MonoBehaviour
                                             townsfolk.transform.rotation);
 
         // value to loop through ragdoll array
-        currentRagdoll += 1;
+        if (currentRagdoll >= maxNumberRagdolls)
+        {
+            currentRagdoll = 0;
+        }
 
         // adding new ragdoll to array & and destroying last ragdoll if ragdoll number
         // exceeds max ragdolls
-        if (currentRagdoll >= maxNumberRagdolls)
+        if (ragdollObjects[currentRagdoll] == null)
         {
-            if (ragdollObjects[currentRagdoll] == null)
-            {
-                ragdollObjects[currentRagdoll] = newRagdoll;
-            }
-            else
-            {
-                Destroy(ragdollObjects[currentRagdoll]);
-                ragdollObjects[currentRagdoll] = newRagdoll;
-            }
+            ragdollObjects[currentRagdoll] = newRagdoll;
+        }
+        else
+        {
+            Destroy(ragdollObjects[currentRagdoll]);
+            ragdollObjects[currentRagdoll] = newRagdoll;
+
         }
 
-        // finally destroys the townsfolk that died
         Destroy(townsfolk);
+
+        Transform rt = ragdollObjects[currentRagdoll].transform;
+
+        Transform bones = rt.GetChild(0);
+
+        Transform hips = bones.GetChild(0);
+
+        hips.gameObject.GetComponent<Rigidbody>().velocity = (Vector3.forward) * ragdollDeathFling;
+
+        currentRagdoll += 1;
+
+        // finally destroys the townsfolk that died
+
     }
 }

@@ -19,7 +19,7 @@ public class TownsfolkEnemy : MonoBehaviour
         thisAgent = GetComponent<NavMeshAgent>();
         playerObject = GameObject.Find("Player");
         laserObject = GameObject.Find("LaserLine");
-        townsfolkControllerScript = GameObject.Find("CodeHandler").GetComponent<TownsfolkController>();
+        townsfolkControllerScript = GameObject.Find("codeHandler").GetComponent<TownsfolkController>();
 
         newPlayerLocation = playerObject.transform.position;
         oldPlayerLocation = newPlayerLocation;
@@ -44,7 +44,8 @@ public class TownsfolkEnemy : MonoBehaviour
     {
         if (laserFrien.gameObject.tag == "laser")
         {
-            townsfolkControllerScript.DestroyTownsfolk(this.gameObject);
+            GameObject thisObject = this.gameObject;
+            townsfolkControllerScript.DestroyTownsfolk(ref thisObject);
             Debug.Log(":(");
         }
     }
