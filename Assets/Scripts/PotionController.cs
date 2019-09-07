@@ -29,7 +29,7 @@ public class PotionController : MonoBehaviour
     public GameObject playerObject;
 
     private playerController playerScript;
-    private RoomsController roomsScript;
+    public RoomsController roomsScript;
 
     private List<Potion> potionList;
     public GameObject potionObject;

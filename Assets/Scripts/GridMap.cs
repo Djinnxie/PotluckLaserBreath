@@ -164,7 +164,7 @@ public class GridMap : MonoBehaviour
         // if its the last piece, cap it off with an end piece
         if (count == hallwaySegments - 1)
         {
-            gridMap[x, y] = new CorridorSection(pieceType, x, y, 0, previousHall[2]);
+            gridMap[x, y] = new CorridorSection(pieceType, x, y, 0, nextHall[2]);
             Instantiate(endObject, gridMap[x, y].position, gridMap[x, y].rotation);
         }
         else
