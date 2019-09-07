@@ -613,6 +613,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   aggroDistance: 35
+  ragdollObject: {fileID: 6350112185769683445, guid: 7d9c1e6972ea57148920c6105e395166,
+    type: 3}
 --- !u!54 &4874630785453809192
 Rigidbody:
   m_ObjectHideFlags: 0
