@@ -961,7 +961,7 @@ MonoBehaviour:
   lookUpMax: 90
   lookDownMax: 90
   crouchDistance: 1.2
-  potionGrabDistance: 3.5
+  potionGrabDistance: 6
   startingPotionCount: 3
   uiObject: {fileID: 1782947875}
   gridMapScript: {fileID: 0}
@@ -1441,6 +1441,7 @@ GameObject:
   - component: {fileID: 671508480}
   - component: {fileID: 671508481}
   - component: {fileID: 671508482}
+  - component: {fileID: 671508483}
   m_Layer: 0
   m_Name: codeHandler
   m_TagString: Untagged
@@ -1511,6 +1512,7 @@ MonoBehaviour:
   innerGridDistance: 3
   hallwaySegments: 15
   townsfolkControllerScript: {fileID: 671508482}
+  potionControllerScript: {fileID: 671508483}
 --- !u!114 &671508481
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1600,13 +1602,42 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6378517b7562944699ec3c1a1cb1aa0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bardObject: {fileID: 0}
+  bardObject: {fileID: 5998346329640038242, guid: e95c1ddeae56d764985d0415823346f1,
+    type: 3}
+  bardWeight: 5
   chefObject: {fileID: 3156273701994911253, guid: 19f7a7b4abda2874b8a07c803a1f3132,
     type: 3}
+  chefWeight: 4
   farmerObject: {fileID: 1876361862065712426, guid: ab420eeec5dacde4cac7234d11e02cfa,
     type: 3}
+  farmerWeight: 3
+  farmer2Object: {fileID: 613948875143220412, guid: 82b7525e4f1127a48ba67851a606792c,
+    type: 3}
+  farmer2Weight: 2
+  soldierObject: {fileID: 3803745758834861470, guid: 02cf7d1c69167374e9012083324fce47,
+    type: 3}
+  soldierWeight: 1
   numberOfTownsfolk: 9
   gridMapScript: {fileID: 671508480}
+  maxNumberRagdolls: 5
+  ragdollDeathFling: 5
+  playerObject: {fileID: 447451182}
+--- !u!114 &671508483
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 671508477}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c8cd86a6210e8a40a695f2ca83ba252, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerObject: {fileID: 447451182}
+  potionObject: {fileID: 7679909150840690109, guid: 338e7a6325afe8043aee3d99584bad25,
+    type: 3}
+  potionRarity: 1
 --- !u!1 &691045469
 GameObject:
   m_ObjectHideFlags: 0

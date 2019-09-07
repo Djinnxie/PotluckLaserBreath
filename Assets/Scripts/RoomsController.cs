@@ -173,6 +173,11 @@ public class BaseRoom
         position = new Vector3(x * roomSize +newWidth, z * roomSize, y * roomSize +newLength);// +length/2);
 
     }
+    
+    public RoomSection[,] GetRoomSectionArray ()
+    {
+        return roomPieces;
+    }
 }
 public class RoomsController : MonoBehaviour
 {
@@ -185,123 +190,7 @@ public class RoomsController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        BaseRoom newRoom;
-        //looping through bellow grid
-        //Debug.Log(gridMapScript.outerGridSizeX / 2);
-/*        for (int x = gridMapScript.outerGridSizeX/2; x > gridMapScript.outerGridSizeX; x++)
-        {
 
-            for (int y = gridMapScript.outerGridSizeY/2; y > 0; y--)
-            {
-                if(gridMapScript.GetGridSection(x,y).coords[0] == -1)
-                {
-                    Debug.Log("found an edge");
-                    newRoom =  new BaseRoom( roomsTypes[0]);
-                    newRoom.SetPosition(x, y, 0);
-                    newRoom.Rotate(0);
-                   
-                    if(CanRoomFit(x,y, roomsTypes[0]))
-                    {
-                        AddRoomToList(newRoom,x,y,0);
-                        roomCount++;
-                        break;
-                    }
-                }
-            }
-        }
-*/
-/*        for (int y = gridMapScript.innerGridDistance; y < gridMapScript.outerGridSizeY; y++)
-        {
-            for (int x = gridMapScript.innerGridDistance; x < gridMapScript.outerGridSizeX; x++)
-            {
-                if (gridMapScript.GetGridSection(x, y).coords[0] != -1)
-                {
-                    newRoom = new BaseRoom(roomsTypes[0]);
-                    newRoom.SetPosition(x-1, y, 0);
-                    newRoom.Rotate(0);
-
-                    if (CanRoomFit(x-1, y, roomsTypes[0]))
-                    {
-                        AddRoomToList(newRoom, x-1, y, 0);
-                        roomCount++;
-                        break;
-                    }
-                }
-            }
-        }*/
-
-        /*x = -1;
-        //looping through left of grid
-        for (y = 0; y < gridMapScript.innerGridSizeY; y++)
-        {
-            if (roomCount < maxRooms)
-            {
-                if (CanRoomFit(x, y, roomsTypes[0]))
-                {
-                    roomsInPlay.Add(new BaseRoom(roomsTypes[0]));
-                    roomsInPlay[roomCount].SetPosition(x, y, 0);
-                    roomsInPlay[roomCount].Rotate(0);
-                    Instantiate(roomsInPlay[roomCount].roomObject, roomsInPlay[roomCount].position,
-                        roomsInPlay[roomCount].rotation);
-                    roomCount++;
-                }
-            }
-        }
-
-        //looping through above grid
-        y = gridMapScript.innerGridSizeY + 1;
-        for (x = 0; x < gridMapScript.innerGridSizeX; x++)
-        {
-            if (roomCount < maxRooms)
-            {
-                if (CanRoomFit(x, y, roomsTypes[0]))
-                {
-                    roomsInPlay.Add(new BaseRoom(roomsTypes[0]));
-                    roomsInPlay[roomCount].SetPosition(x, y, 0);
-                    roomsInPlay[roomCount].Rotate(0);
-                    Instantiate(roomsInPlay[roomCount].roomObject, roomsInPlay[roomCount].position,
-                        roomsInPlay[roomCount].rotation);
-                    roomCount++;
-                }
-            }
-        }
-
-        //looping through right of grid
-        x = gridMapScript.innerGridSizeX + 1;
-        for (y = 0; y < gridMapScript.innerGridSizeY; y++)
-        {
-            if (roomCount < maxRooms)
-            {
-                if (CanRoomFit(x, y, roomsTypes[0]))
-                {
-                    roomsInPlay.Add(new BaseRoom(roomsTypes[0]));
-                    roomsInPlay[roomCount].SetPosition(x, y, 0);
-                    roomsInPlay[roomCount].Rotate(0);
-                    Instantiate(roomsInPlay[roomCount].roomObject, roomsInPlay[roomCount].position,
-                        roomsInPlay[roomCount].rotation);
-                    roomCount++;
-                }
-            }
-        }*/
-
-        /*        for(int x = 0; x < gridMapScript.outerGridSizeX; x++)
-                {
-                    string lineToPrint = "";
-                    for (int y = 0; y < gridMapScript.outerGridSizeY; y++)
-                    {
-                        if (gridMapScript.GetGridSection(x, y).coords[0] == -1)
-                        {
-                            lineToPrint += "-";
-                        }
-                        else
-                        {
-                            lineToPrint += "X";
-                        }
-                    }
-                    Debug.Log(x+"   "+lineToPrint);
-                }
-                //  =(
-                 */
     }
 
     // Update is called once per frame
@@ -314,167 +203,6 @@ public class RoomsController : MonoBehaviour
     {
 
         return true;
-        /*int roomBottomLeftX, roomBottomLeftY, roomTopRightX, roomTopRightY;
-
-        //changing where the bounds of bottom left and top right are
-
-        // if X is to the right of the grid middle
-        if (targetX > (gridMapScript.innerGridSizeX/2))
-        {
-            roomBottomLeftX = targetX;
-            roomTopRightX = targetX + targetRoom.width;
-        }
-
-        // if X is to the left of the grid middle
-        else if (targetX < (gridMapScript.innerGridSizeX / 2))
-        {
-            roomTopRightX = targetX;
-            roomBottomLeftX = targetX - targetRoom.width;
-        }
-        else
-        {
-            roomTopRightX = targetX;
-            roomBottomLeftX = targetX - targetRoom.width;
-        }
-
-        // Y is above the grid middle
-        if (targetY > (gridMapScript.innerGridSizeY/2))
-        {
-            roomBottomLeftY = targetY;
-            roomTopRightY = targetY + targetRoom.length;
-        }
-
-        // if Y is bellow the grid middle
-        else if (targetY < (gridMapScript.innerGridSizeY / 2))
-        {
-            roomTopRightY = targetY;
-            roomBottomLeftY = targetY - targetRoom.length;
-        }
-        else
-        {
-            roomTopRightY = targetY;
-            roomBottomLeftY = targetY - targetRoom.length;
-        }
-
-        // checks which side left or right of the middle of the grid the room is
-        if (roomBottomLeftX > (gridMapScript.innerGridSizeX / 2))
-        {
-            for (int x = roomBottomLeftX; x < roomTopRightX; x++)
-            {
-                //checks which side above or bellow the grid middle
-                if (roomBottomLeftY > (gridMapScript.innerGridSizeY / 2))
-                {
-                    for (int y = roomBottomLeftY; y < roomTopRightY; y++)
-                    {
-                        if (gridMapScript.GetGridSection(x,y).coords[0] != -1)
-                        {
-                            return false;
-                        }
-                    }
-                }
-                else
-                {
-                    for (int y = roomTopRightY; y < roomBottomLeftY; y++)
-                    {
-                        if (gridMapScript.GetGridSection(x, y).coords[0] != -1)
-                        {
-                            return false;
-                        }
-                    }
-                }
-            }
-        }
-        else
-        {
-            for (int x = roomTopRightX; x < roomBottomLeftX; x++)
-            {
-                //checks which side above or bellow the grid middle
-                if (roomBottomLeftY > (gridMapScript.innerGridSizeY / 2))
-                {
-                    for (int y = roomBottomLeftY; y < roomTopRightY; y++)
-                    {
-                        if (gridMapScript.GetGridSection(x, y).coords[0] != -1)
-                        {
-                            return false;
-                        }
-                    }
-                }
-                else
-                {
-                    for (int y = roomTopRightY; y < roomBottomLeftY; y++)
-                    {
-                        if (gridMapScript.GetGridSection(x, y).coords[0] != -1)
-                        {
-                            return false;
-                        }
-                    }
-                }
-            }
-        }
-
-        //checks to see if the new suggested room is overlapping a current room
-        foreach (BaseRoom br in roomsInPlay)
-        {
-            print(roomCount);
-            if (roomBottomLeftX > (gridMapScript.innerGridSizeX / 2))
-            {
-                for (int x = roomBottomLeftX; x < roomTopRightX; x++)
-                {
-                    if (roomBottomLeftY > (gridMapScript.innerGridSizeY / 2))
-                    {
-                        for (int y = roomBottomLeftY; y < roomTopRightY; y++)
-                        {
-                            if ((x >= br.bottomLeft[0] && x < br.bottomLeft[0]+br.width) ||
-                                (y >= br.bottomLeft[1] && y < br.bottomLeft[1]+br.length))
-                            {
-                                return false;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        for (int y = roomTopRightY; y < roomBottomLeftY; y++)
-                        {
-                            if ((x >= br.bottomLeft[0] && x < br.bottomLeft[0] + br.width) ||
-                                (y >= br.bottomLeft[1] && y < br.bottomLeft[1] + br.length))
-                            {
-                                return false;
-                            }
-                        }
-                    }
-                }
-            }
-            else
-            {
-                for (int x = roomTopRightX; x < roomBottomLeftX; x++)
-                {
-                    if (roomBottomLeftY > (gridMapScript.innerGridSizeY / 2))
-                    {
-                        for (int y = roomBottomLeftY; y < roomTopRightY; y++)
-                        {
-                            if ((x >= br.bottomLeft[0] && x < br.bottomLeft[0] + br.width) ||
-                                (y >= br.bottomLeft[1] && y < br.bottomLeft[1] + br.length))
-                            {
-                                return false;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        for (int y = roomTopRightY; y < roomBottomLeftY; y++)
-                        {
-                            if ((x >= br.bottomLeft[0] && x < br.bottomLeft[0] + br.width) ||
-                                (y >= br.bottomLeft[1] && y < br.bottomLeft[1] + br.length))
-                            {
-                                return false;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        return true;*/
     }
 
     public int CanRoomFit(int targetX, int targetY, BaseRoom targetRoom, int count)
@@ -491,10 +219,8 @@ public class RoomsController : MonoBehaviour
                 {
                     if (roomWorks)
                     {
-                        //Debug.Log("obstacle at position " + (targetX + x) + ", "+ (targetY + y));
                     }
-                    //roomGridLocationX[x] = targetX + x;
-                    //roomGridLocationY[y] = targetX + x;
+
                     roomWorks = false;
                 }
             }
@@ -512,7 +238,6 @@ public class RoomsController : MonoBehaviour
         else
         {
             // write the flip code before enabling this
-            //return CanRoomFit(targetX, targetY, targetRoom, count += 1);
             return -1;
         }
     }
@@ -546,6 +271,7 @@ public class RoomsController : MonoBehaviour
         GameObject newRoomObject = Instantiate(newRoom.roomObject, newRoom.position,
                             newRoom.rotation);
         roomCount += 1;
+        roomsInPlay.Add(newRoom);
 
         return newRoomObject;
     }
