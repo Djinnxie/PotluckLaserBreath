@@ -36,14 +36,13 @@ public class PotionController : MonoBehaviour
 
     public int potionRarity;
     // Start is called before the first frame update
-    void Start()
+    public void Start()
     {
         playerObject = GameObject.Find("Player");
         playerScript = playerObject.GetComponent<playerController>();
         roomsScript = GameObject.Find("codeHandler").GetComponent<RoomsController>();
 
         potionList = new List<Potion>();
-        Debug.Log("started Potion Controller");
     }
 
     // Update is called once per frame
@@ -75,7 +74,6 @@ public class PotionController : MonoBehaviour
                 Potion p = new Potion(Instantiate(potionObject, br.GetRoomSectionArray()[randX, randY].position,
                                 br.GetRoomSectionArray()[randX, randY].rotation));
                 potionList.Add(p);
-                Debug.Log("Potion Count: " + potionList.Count);
                 
              }
         }

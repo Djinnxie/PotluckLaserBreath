@@ -966,6 +966,7 @@ MonoBehaviour:
   uiObject: {fileID: 1782947875}
   gridMapScript: {fileID: 0}
   laserControllerScript: {fileID: 447451183}
+  playerHeathMax: 0
 --- !u!136 &447451186
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1509,7 +1510,7 @@ MonoBehaviour:
   roomSize: 14
   innerGridSizeX: 9
   innerGridSizeY: 9
-  innerGridDistance: 3
+  innerGridDistance: 4
   hallwaySegments: 15
   townsfolkControllerScript: {fileID: 671508482}
   potionControllerScript: {fileID: 671508483}
@@ -3009,6 +3010,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerObject: {fileID: 0}
   laserChargeBarObject: {fileID: 2042951801}
+  healthBarObject: {fileID: 949798252}
 --- !u!1 &1801653411
 GameObject:
   m_ObjectHideFlags: 0

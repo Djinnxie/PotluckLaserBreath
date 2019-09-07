@@ -256,10 +256,12 @@ public class RoomsController : MonoBehaviour
         {
             for (int y = 0; y < newRoom.length; y++)
             {
-                newX = newRoom.bottomLeft[0] + x;
-                newY = newRoom.bottomLeft[1] + y;
+                newX = x + gridPositionX;
+                newY = y + gridPositionY;
                 //Debug.Log("Room X: " + newX + " Room Y: " + newY);
                 newRoom.roomPieces[x, y] = new RoomSection(newRoom, x + gridPositionX, y + gridPositionY, 0, newRoom.rot);
+
+                Debug.Log("room Piece X: " + newX + " Y: " + newY);
                 gridMapScript.GetGridMap()[x+gridPositionX,y+gridPositionY] = newRoom.roomPieces[x, y];
         //Debug.Log("Room Piece X " + gridMapScript.GetGridMap()[x+gridPositionX, y + gridPositionY].coords[0]
          //   + " Room Piece Y " + gridMapScript.GetGridMap()[x+gridPositionX, y + gridPositionY].coords[1]);

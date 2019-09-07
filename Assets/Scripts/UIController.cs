@@ -9,6 +9,7 @@ public class UIController : MonoBehaviour
     public GameObject playerObject;
 
     public GameObject laserChargeBarObject;
+    public GameObject healthBarObject;
 
 
     // Start is called before the first frame update
@@ -28,6 +29,12 @@ public class UIController : MonoBehaviour
         laserCharge = (laserCharge / chargeMax) * 2;
 
         laserChargeBarObject.transform.localScale = new Vector3(laserCharge, 1, 1);
+    }
+
+    public void ChangeHealth(float health, float healthMax)
+    {
+        health = (health / healthMax) * 2;
+        healthBarObject.transform.localScale = new Vector3(health, 1, 1);
     }
 
     public void ChangePotionValue (int potionValue)

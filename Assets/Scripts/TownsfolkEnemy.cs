@@ -13,6 +13,7 @@ public class TownsfolkEnemy : MonoBehaviour
     private Vector3 newPlayerLocation;
     public GameObject ragdollObject;
     private TownsfolkController townsfolkControllerScript;
+    public float damage;
     // Start is called before the first frame update
     void Start()
     {
@@ -31,7 +32,11 @@ public class TownsfolkEnemy : MonoBehaviour
     {
         newPlayerLocation = playerObject.transform.position;
 
-        if (DistanceToPlayer() < aggroDistance)
+        if(oldPlayerLocation.x == newPlayerLocation.x && oldPlayerLocation.z == newPlayerLocation.z)
+        {
+
+        }
+        else if (DistanceToPlayer() < aggroDistance)
         {
             thisAgent.SetDestination(newPlayerLocation);
         }
@@ -40,13 +45,18 @@ public class TownsfolkEnemy : MonoBehaviour
 
     }
 
-    private void OnTriggerEnter(Collider laserFrien)
+    private void OnTriggerEnter(Collider col)
     {
-        if (laserFrien.gameObject.tag == "laser")
+        if (col.gameObject.tag == "laser")
         {
             GameObject thisObject = this.gameObject;
             townsfolkControllerScript.DestroyTownsfolk(ref thisObject);
             Debug.Log(":(");
+        }
+        else if(col.gameObject.tag == "Player")
+        {
+            Debug.Log("collided with Player");
+            playerObject.GetComponent<playerController>().TakeDamage(damage * Time.deltaTime);
         }
     }
 

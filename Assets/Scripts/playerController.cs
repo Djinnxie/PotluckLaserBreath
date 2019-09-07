@@ -45,6 +45,7 @@ public class playerController : MonoBehaviour
     public LaserController laserControllerScript;
 
     private float playerHealth;
+    public float playerHeathMax;
 
     private Quaternion oldCameraRotation;
     private PotionController potionControllerScript;
@@ -290,6 +291,7 @@ public class playerController : MonoBehaviour
     public void SetHealth(float newHealth)
     {
         playerHealth = newHealth;
+        uiScript.ChangeHealth(playerHealth, playerHeathMax);
     }
 
     public void TakeDamage(float damage)
@@ -299,6 +301,10 @@ public class playerController : MonoBehaviour
         if (playerHealth <= 0)
         {
             PlayerIsDead();
+        }
+        else
+        {
+            uiScript.ChangeHealth(playerHealth, playerHeathMax);
         }
     }
 

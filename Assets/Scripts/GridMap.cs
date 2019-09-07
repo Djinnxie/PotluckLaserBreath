@@ -50,6 +50,7 @@ public class GridMap : MonoBehaviour
         createHall(innerGridDistance, innerGridDistance, 0, 0);
 
         townsfolkControllerScript.SummonTownsfolk();
+        potionControllerScript.Start();
         potionControllerScript.SpawnPotions();
     }
 
@@ -275,7 +276,10 @@ public class GridMap : MonoBehaviour
 
         if (count < hallwaySegments-1)
         {
+            Debug.Log("NextHall X: " + nextHall[0] + " Y: " + nextHall[1]);
+            Debug.Log("hall Count: " + count);
             createHall(nextHall[0], nextHall[1], count+=1, nextHall[2]);
+            
         }
         else
         {
