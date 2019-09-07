@@ -10,10 +10,13 @@ public class TownsfolkController : MonoBehaviour
 
     public int numberOfTownsfolk;
     public GridMap gridMapScript;
+    private GameObject[] ragdollObjects;
+    public int maxNumberRagdolls;
+    private int currentRagdoll;
     // Start is called before the first frame update
     void Start()
     {
-        
+        ragdollObjects = new GameObject[maxNumberRagdolls];
     }
 
     // Update is called once per frame
@@ -44,5 +47,34 @@ public class TownsfolkController : MonoBehaviour
 
             Instantiate(newTownsfolk, currentGridSection.position, currentGridSection.rotation);
         }
+    }
+
+    public void DestroyTownsfolk(GameObject townsfolk)
+    {
+        // makes a newRagdoll object and places it in the world
+        GameObject newRagdoll = Instantiate(townsfolk.GetComponent<TownsfolkEnemy>().ragdollObject,
+                                            townsfolk.transform.position,
+                                            townsfolk.transform.rotation);
+
+        // value to loop through ragdoll array
+        currentRagdoll += 1;
+
+        // adding new ragdoll to array & and destroying last ragdoll if ragdoll number
+        // exceeds max ragdolls
+        if (currentRagdoll >= maxNumberRagdolls)
+        {
+            if (ragdollObjects[currentRagdoll] == null)
+            {
+                ragdollObjects[currentRagdoll] = newRagdoll;
+            }
+            else
+            {
+                Destroy(ragdollObjects[currentRagdoll]);
+                ragdollObjects[currentRagdoll] = newRagdoll;
+            }
+        }
+
+        // finally destroys the townsfolk that died
+        Destroy(townsfolk);
     }
 }

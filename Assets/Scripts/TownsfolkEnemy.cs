@@ -11,12 +11,15 @@ public class TownsfolkEnemy : MonoBehaviour
     public int aggroDistance;
     private Vector3 oldPlayerLocation;
     private Vector3 newPlayerLocation;
+    public GameObject ragdollObject;
+    private TownsfolkController townsfolkControllerScript;
     // Start is called before the first frame update
     void Start()
     {
         thisAgent = GetComponent<NavMeshAgent>();
         playerObject = GameObject.Find("Player");
         laserObject = GameObject.Find("LaserLine");
+        townsfolkControllerScript = GameObject.Find("CodeHandler").GetComponent<TownsfolkController>();
 
         newPlayerLocation = playerObject.transform.position;
         oldPlayerLocation = newPlayerLocation;
@@ -41,7 +44,7 @@ public class TownsfolkEnemy : MonoBehaviour
     {
         if (laserFrien.gameObject.tag == "laser")
         {
-            Destroy(gameObject);
+            townsfolkControllerScript.DestroyTownsfolk(this.gameObject);
             Debug.Log(":(");
         }
     }
