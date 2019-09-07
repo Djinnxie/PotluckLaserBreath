@@ -53,9 +53,14 @@ public class TownsfolkEnemy : MonoBehaviour
             townsfolkControllerScript.DestroyTownsfolk(ref thisObject);
             Debug.Log(":(");
         }
-        else if(col.gameObject.tag == "Player")
+    }
+
+    private void OnTriggerStay(Collider col)
+    {
+        if (col.gameObject.tag == "Player")
         {
             Debug.Log("collided with Player");
+            Debug.Log("damage: " + damage * Time.deltaTime);
             playerObject.GetComponent<playerController>().TakeDamage(damage * Time.deltaTime);
         }
     }

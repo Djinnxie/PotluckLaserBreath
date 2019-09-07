@@ -894,7 +894,7 @@ GameObject:
   - component: {fileID: 447451183}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -966,7 +966,7 @@ MonoBehaviour:
   uiObject: {fileID: 1782947875}
   gridMapScript: {fileID: 0}
   laserControllerScript: {fileID: 447451183}
-  playerHeathMax: 0
+  playerHeathMax: 100
 --- !u!136 &447451186
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -975,7 +975,7 @@ CapsuleCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 447451182}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   m_Radius: 0.7
   m_Height: 0.97
@@ -1618,7 +1618,7 @@ MonoBehaviour:
   soldierObject: {fileID: 3803745758834861470, guid: 02cf7d1c69167374e9012083324fce47,
     type: 3}
   soldierWeight: 1
-  numberOfTownsfolk: 9
+  numberOfTownsfolk: 50
   gridMapScript: {fileID: 671508480}
   maxNumberRagdolls: 5
   ragdollDeathFling: 5
@@ -3010,7 +3010,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerObject: {fileID: 0}
   laserChargeBarObject: {fileID: 2042951801}
-  healthBarObject: {fileID: 949798252}
+  healthBarObject: {fileID: 1476409459}
 --- !u!1 &1801653411
 GameObject:
   m_ObjectHideFlags: 0

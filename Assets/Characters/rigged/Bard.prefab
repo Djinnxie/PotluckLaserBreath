@@ -511,6 +511,7 @@ MonoBehaviour:
   aggroDistance: 35
   ragdollObject: {fileID: 8657347538401575081, guid: 0f06fd53856eb1249a926bfc685e9e1e,
     type: 3}
+  damage: 10
 --- !u!54 &-8900356083944888933
 Rigidbody:
   m_ObjectHideFlags: 0

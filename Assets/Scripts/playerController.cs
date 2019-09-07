@@ -55,6 +55,7 @@ public class playerController : MonoBehaviour
 
 
         uiScript = uiObject.GetComponent<UIController>();
+        gridMapScript = GameObject.Find("codeHandler").GetComponent<GridMap>();
         ChangePotionCount(startingPotionCount);
         SetLaserCharge(laserChargeMax);
         if (uiScript == null)
@@ -63,6 +64,7 @@ public class playerController : MonoBehaviour
         }
         Cursor.visible = false;
 
+        playerHealth = playerHeathMax;
         oldCameraRotation = cameraTransform.rotation;
 
         potionControllerScript = GameObject.Find("codeHandler").GetComponent<PotionController>();
@@ -296,7 +298,7 @@ public class playerController : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
-        playerHealth -= damage;
+        playerHealth = playerHealth - damage;
 
         if (playerHealth <= 0)
         {
@@ -310,6 +312,7 @@ public class playerController : MonoBehaviour
 
     private void PlayerIsDead()
     {
+        Debug.Log("player died");
         uiScript.ResetUI();
         gridMapScript.ResetGridMap();
         ResetPlayer();
