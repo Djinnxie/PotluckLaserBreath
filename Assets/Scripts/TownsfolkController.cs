@@ -5,8 +5,15 @@ using UnityEngine;
 public class TownsfolkController : MonoBehaviour
 {
     public GameObject bardObject;
+    public int bardWeight;
     public GameObject chefObject;
+    public int chefWeight;
     public GameObject farmerObject;
+    public int farmerWeight;
+    public GameObject soldierObject;
+    public int soldierWeight;
+
+
 
     public int numberOfTownsfolk;
     public GridMap gridMapScript;
@@ -31,12 +38,38 @@ public class TownsfolkController : MonoBehaviour
     {
         int randX, randY;
 
-        GameObject newTownsfolk;
+        GameObject newTownsfolk = bardObject;
         GridSection currentGridSection;
+        int weightTotal = bardWeight + chefWeight + farmerWeight + soldierWeight;
+        int weight;
         for (int i = 0; i < numberOfTownsfolk; i++)
         {
             //replace with randomisation
-            newTownsfolk = chefObject;
+            weight = Random.Range(0, weightTotal);
+
+            if (weight >= 0 && weight < bardWeight)
+            {
+                newTownsfolk = bardObject;
+            }
+            else if (weight >= bardWeight && weight < bardWeight + chefWeight)
+            {
+                newTownsfolk = chefObject;
+            }
+            else if (weight >= bardWeight+chefWeight && weight < bardWeight+chefWeight+farmerWeight)
+            {
+                newTownsfolk = farmerObject;
+            }
+            else if (weight >= bardWeight + chefWeight + farmerWeight && weight < weightTotal)
+            {
+                newTownsfolk = soldierObject;
+            }
+            else
+            {
+                Debug.Log("weighting broke with value: " + weight);
+            }
+            
+            
+            //newTownsfolk = chefObject;
 
             do
             {
