@@ -87,6 +87,7 @@ public class TownsfolkController : MonoBehaviour
             } while (currentGridSection.coords[0] == -1);
 
             Instantiate(newTownsfolk, currentGridSection.position, currentGridSection.rotation);
+            currentGridSection.hasTownsfolk = true;
         }
     }
 

@@ -46,10 +46,12 @@ public class playerController : MonoBehaviour
 
     private float playerHealth;
 
+    private Quaternion oldCameraRotation;
+    private PotionController potionControllerScript;
     // Start is called before the first frame update
     void Start()
     {
-        
+
 
         uiScript = uiObject.GetComponent<UIController>();
         ChangePotionCount(startingPotionCount);
@@ -59,8 +61,11 @@ public class playerController : MonoBehaviour
             print("failed to load script");
         }
         Cursor.visible = false;
-    }
 
+        oldCameraRotation = cameraTransform.rotation;
+
+        potionControllerScript = GameObject.Find("codeHandler").GetComponent<PotionController>();
+    }
 
     // Update is called once per frame
     void Update()
@@ -76,7 +81,7 @@ public class playerController : MonoBehaviour
 
         if (Input.GetAxis("Mouse X") != 0 || Input.GetAxis("Mouse Y") != 0)
         {
-
+            oldCameraRotation = cameraTransform.rotation;
             // get left to right mouse movement
             float yRot = Input.GetAxis("Mouse X") * rotationSpeed;
 
@@ -93,12 +98,16 @@ public class playerController : MonoBehaviour
 
             // clamps the max up and down view
             cameraTransform.localRotation = ClampRotationAroundXAxis(cameraTransform.localRotation);
+            
         }
 
         if ((Input.GetKey(KeyCode.Space) || Input.GetMouseButton(0)) && RemainingLaserCharge())
         {
+            if (cameraTransform.rotation != oldCameraRotation)
+            {
+                laserControllerScript.FireLaser(cameraTransform.rotation);
 
-            laserControllerScript.FireLaser(cameraTransform.rotation);
+            }
             if (laserParticleStart)
             {
                 laserObject.GetComponent<ParticleSystem>().Play();
@@ -192,11 +201,15 @@ public class playerController : MonoBehaviour
             charController.SetInteger("walk", 0);
         }
 
+        if (Input.GetKey("e"))
+        {
+            potionControllerScript.GrabPotion();
+        }
 
 
 
 
-        if ((Input.GetKey(KeyCode.LeftControl) || Input.GetKey("c")) && crouching == false)
+            if ((Input.GetKey(KeyCode.LeftControl) || Input.GetKey("c")) && crouching == false)
         {
             cameraTransform.position += new Vector3(0, crouchDistance * -1, 0);
 
@@ -225,21 +238,20 @@ public class playerController : MonoBehaviour
 
     public bool GrabPotion(float x, float y, float z)
     {
-        if (Input.GetKey("e"))
-        {
+        
             float distanceFromPotion;
 
             distanceFromPotion = Mathf.Abs(x - transform.position.x) 
-                                + Mathf.Abs(y - transform.position.y) 
-                                + Mathf.Abs(z - transform.position.z);
+                                + Mathf.Abs(y - transform.position.z) 
+                                + Mathf.Abs(z - transform.position.y);
 
-            if (distanceFromPotion < potionGrabDistance)
+        Debug.Log("potion X: " + x + " Y: " + y);
+        Debug.Log("Player X: " + transform.position.x + " Y: " + transform.position.z);
+        if (distanceFromPotion < potionGrabDistance)
             {
                 ChangePotionCount(1);
                 return true;
             }
-
-        }
         return false;
     }
 

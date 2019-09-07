@@ -11,6 +11,8 @@ public class GridSection
     public int gridRot;
     public int roomSize = 7 * 2;
 
+    public bool hasTownsfolk;
+    public bool hasPotion;
     //public bool willDraw { get; set; }
     public GridSection()
     {

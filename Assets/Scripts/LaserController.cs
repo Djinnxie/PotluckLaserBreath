@@ -38,7 +38,7 @@ public class LaserController : MonoBehaviour
 
         laser.transform.rotation = rotation;
         RaycastHit hit;
-        if (Physics.Raycast(laser.transform.position, transform.TransformDirection(new Vector3(0f, 0f, maxLength)), out hit, maxLength))
+        if (Physics.Raycast(laser.transform.position, transform.TransformDirection(new Vector3(0f, 0f, maxLength)), out hit, maxLength) == true)
         {
             laserObject.size = new Vector3(0.5f,0.5f, hit.distance);
             laserObject.center = new Vector3(laserObject.center.x, laserObject.center.y, hit.distance / 2);
@@ -51,6 +51,8 @@ public class LaserController : MonoBehaviour
         laserObject.enabled = false;
         hasLaserFired = false;
         laser.SetPosition(1, new Vector3(0f, 0f, 0f));
+
+        Debug.Log("Laser Halted");
     }
 
 }

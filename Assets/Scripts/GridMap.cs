@@ -30,6 +30,7 @@ public class GridMap : MonoBehaviour
     private bool placedPrison;
 
     public TownsfolkController townsfolkControllerScript;
+    public PotionController potionControllerScript;
 
     // Start is called before the first frame update
     public void Start()
@@ -49,6 +50,7 @@ public class GridMap : MonoBehaviour
         createHall(innerGridDistance, innerGridDistance, 0, 0);
 
         townsfolkControllerScript.SummonTownsfolk();
+        potionControllerScript.SpawnPotions();
     }
 
     // Update is called once per frame
