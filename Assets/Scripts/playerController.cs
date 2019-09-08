@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class playerController : MonoBehaviour
@@ -312,6 +313,7 @@ public class playerController : MonoBehaviour
 
     private void PlayerIsDead()
     {
+        SceneManager.LoadScene(0);
         Debug.Log("player died");
         uiScript.ResetUI();
         gridMapScript.ResetGridMap();

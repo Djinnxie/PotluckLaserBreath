@@ -261,7 +261,7 @@ public class RoomsController : MonoBehaviour
                 //Debug.Log("Room X: " + newX + " Room Y: " + newY);
                 newRoom.roomPieces[x, y] = new RoomSection(newRoom, x + gridPositionX, y + gridPositionY, 0, newRoom.rot);
 
-                Debug.Log("room Piece X: " + newX + " Y: " + newY);
+                //Debug.Log("room Piece X: " + newX + " Y: " + newY);
                 gridMapScript.GetGridMap()[x+gridPositionX,y+gridPositionY] = newRoom.roomPieces[x, y];
         //Debug.Log("Room Piece X " + gridMapScript.GetGridMap()[x+gridPositionX, y + gridPositionY].coords[0]
          //   + " Room Piece Y " + gridMapScript.GetGridMap()[x+gridPositionX, y + gridPositionY].coords[1]);

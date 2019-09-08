@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 [System.Serializable]
 public class GridMap : MonoBehaviour
@@ -154,19 +155,90 @@ public class GridMap : MonoBehaviour
 
         if (nextHall[2] == -1)
         {
-            return;
+            Debug.Log("rebooting");
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        return;
         }
 
 
 
         bool firstDoorBool = false;
         bool secondDoorBool = false;
+        int endRotation = 0;// 4-previousHall[2]+nextHall[2]==0?2:0;
 
-        // if its the last piece, cap it off with an end piece
-        if (count == hallwaySegments - 1)
-        {
-            gridMap[x, y] = new CorridorSection(pieceType, x, y, 0, nextHall[2]);
+            // if its the last piece, cap it off with an end piece
+            if (count == hallwaySegments - 1)
+            {
+                switch (previousHall[2])
+                {
+                    // from below
+                    case 0:
+                        switch (nextHall[2])
+                        {
+                        case 0:
+                            endRotation = 1;
+                            break;
+                            // to the right
+                            case 1:
+                                endRotation = 2;
+                                //print("zero one");
+                                break;
+                            // to the left
+                            case 3:
+                                endRotation = 0;
+                                break;
+                        }
+                        break;
+                    // from the left
+                    case 1:
+                        switch (nextHall[2])
+                        {
+                            // to above
+                            case 0:
+                                endRotation = 3;
+                                break;
+                        case 1:
+                            endRotation = 2;
+                            break;
+                            // to below
+                            case 2:
+                                endRotation = 0;
+                                break;
+                        }
+                        break;
+                    // from the top
+                    case 2:
+                        switch (nextHall[2])
+                        {
+                            // to the right
+                            case 1:
+                                endRotation = 2;
+                                break;
+                            // to the left
+                            case 3:
+                                endRotation = 3;
+                                break;
+                        }
+                        break;
+                    // from the right
+                    case 3:
+                        switch (nextHall[2])
+                        {
+                            // to above
+                            case 0:
+                                endRotation = 2;
+                                break;
+                            // to below
+                            case 2:
+                                endRotation = 3;
+                                break;
+                        }
+                        break;
+                }
+
+            gridMap[x, y] = new CorridorSection(pieceType, x, y, 0, endRotation);
             Instantiate(endObject, gridMap[x, y].position, gridMap[x, y].rotation);
+            return;
         }
         else
         {
